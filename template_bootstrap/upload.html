@@ -1,0 +1,128 @@
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://unpkg.com/@popperjs/core@2" />
+    <link rel="stylesheet" href="./style.css">
+
+
+</head>
+
+<body>
+    <div class='container mt-3'>
+        <div class='col-12 text-center header'>
+            <h1>請上傳傷口照片</h1>
+        </div>
+
+        <div class='row '>
+            <div class='col-12 d-flex justify-content-end'>                
+                <button type="button" class='btn btn-info' id="addPOIbutton" value="Add POIs" onclick="insRow()">新增</button>
+            </div>
+        </div>
+        <div class='row'>
+            <form method="post" id="POItablediv" class=' col-12'>
+
+                <table id="POITable" class="table">
+                    <thead class="thead-dark text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>檔案名稱</th>
+                            <th>上傳檔案</th>
+                            <th>刪除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class='text-center'>
+                            <td>1</td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <button class='btn btn-danger' type="button" id="delPOIbutton" onclick="deleteRow(this)"><i
+                                        class="fas fa-minus"></i>
+                                </button>
+                            </td>
+    
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <div class='d-flex justify-content-center'>
+                    <button class='btn btn-secondary mr-2'>回上一頁</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="http://unpkg.com/portal-vue"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+
+
+
+<script>
+    var arrHead = new Array();	// array for header.
+    arrHead = ['poi', 'lat', 'long', 'del',];
+    function deleteRow(row) {
+        var i = row.parentNode.parentNode.rowIndex;
+        document.getElementById('POITable').deleteRow(i);
+    }
+
+    var count = 1;
+    function insRow() {
+        var x = document.getElementById('POITable');
+        var len = x.rows.length;
+        if (len == 1) count = 0;
+        count += 1;
+        var new_row = x.insertRow(len);
+
+        new_row.setAttribute('class', 'text-center');
+
+        for (var c = 0; c < arrHead.length; c++) {
+            var td = document.createElement('td'); // table definition.
+            td = new_row.insertCell(c);
+
+            if (c == 0) {
+                td.appendChild(document.createTextNode(count));
+            }
+
+            else if (c == 3) {      // the first column.
+                // add a button in every new row in the first column.
+                var button = document.createElement('button');
+
+                // set input attributes.
+                button.setAttribute('type', 'button');
+                button.setAttribute('class', 'btn btn-danger ');
+
+                // add button's 'onclick' event.
+                button.setAttribute('onclick', 'deleteRow(this)');
+                button.innerHTML = '<i class="fas fa-minus"></i>';
+
+                td.appendChild(button);
+            }
+            else {
+                var ele = document.createElement('input');
+                ele.setAttribute('type', 'text');
+                ele.setAttribute('value', '');
+                if (c == 1) ele.setAttribute('id', 'lat' + len);
+                else ele.setAttribute('id', 'long' + len);
+
+                td.appendChild(ele);
+            }
+        }
+    }
+</script>

@@ -1,0 +1,77 @@
+{%extends 'main/base.html' %}
+
+{%load staticfiles%}
+{% block content%}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<table class="table table-striped  table-hover table-borderless text-center">
+    <thead>
+      <tr>
+        <th scope="col" colspan='2'>結果</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>傷口共約</td>
+        {%if tbsa_result%}
+        <td>{{tbsa_result|floatformat:3}} % TBSA</td>
+        {%else%}
+          <td>無法辨識</td>
+        {%endif%}
+      </tr>
+      <tr>
+        <td>前8小時點</td>
+        <td>ml/hr</td>
+      </tr>
+      <tr>
+        <td >後16小時</td>
+        <td>8 ml/hr</td>
+      </tr>
+    </tbody>
+  </table>
+
+  {%if hand_image_session %}
+    <table class="col-12 table-borderlesstext-center my-2">
+      <thead class=" d-flex justify-content-center ">
+        <tr>
+          <th>手掌</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for k in hand_image_session %}
+        <tr>
+            <td class=" d-flex justify-content-center " >
+              <img src="{{k}}" alt="{{v}}" style="max-width:200px;max-height:200px;"/>
+            </td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  {%else%}
+    <p>無任何手掌照片</p>
+  {%endif%}
+  {%if burn_image_session %}
+    <table class="col-12 table-borderless text-center my-2">
+      <thead>
+        <tr>
+          <th>燙傷</th>
+        </tr>
+      </thead>
+    <tbody>
+      {% for k in burn_image_session %}
+      <tr>
+        <td>
+          <img src="{{k}}" alt="{{v}}" style="max-width:200px;max-height:200px;">
+        </td>
+      </tr>
+      {%endfor%}
+    </tbody>
+
+
+    </table>
+  {%else%}
+    <p>無任何燙傷照片</p>
+  {%endif%}
+
+{%endblock%}

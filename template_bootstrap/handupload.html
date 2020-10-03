@@ -1,0 +1,164 @@
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://unpkg.com/@popperjs/core@2" />
+    <link rel="stylesheet" href="./style.css">
+
+
+</head>
+
+<body>
+    <div class='container mt-3'>
+        <div class='col-12 text-center header'>
+            <h1>請輸上傳傷口照片</h1>
+        </div>
+
+        <div class='row'>
+            <form method="post" action="" id="POItablediv" class=' col-12'>
+
+                <style>
+                    div {
+                        position: relative;
+                        overflow: hidden;
+                    }
+
+                    input {
+                        position: absolute;
+                        font-size: 50px;
+                        opacity: 0;
+                        right: 0;
+                        top: 0;
+                    }
+                </style>
+
+                <div class='row d-flex justify-content-center mb-1'>
+                    <span id='here'></span>
+                </div>
+
+                <div class="row d-flex justify-content-center">
+                    <div class="file btn btn-lg btn-info">
+                        上傳照片
+                        <input type="file" name="file" accept="image/*" />
+                    </div>
+                </div>
+
+                <div class='row d-flex justify-content-center mt-2'>
+                    <button class='btn btn-secondary mr-2'>回上一頁</button>
+                    <button type="submit" class="btn btn-primary">送出</button>
+
+                </div>
+
+            </form>
+        </div>
+        <div id="loader">
+
+            <div style="top:35%;">
+                <div class='row d-flex justify-content-center'>
+                    <img src="./spin.gif" alt="" >
+                </div>
+                <div class="text-center text-black">
+
+                    處理中，請稍後<Br><b style="color: red;">請保持連線</b>
+                </div>
+            </div>
+        </div>
+
+        <!--
+        <div id="checking"
+            style="position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: #fafafa;z-index: 99;">
+
+            <div class="text text-black"
+                style="position: absolute;top: 45%;left: 0;height: 100%;width: 100%;font-size: 18px;text-align: center;">
+
+                處理中，請稍後<Br><b style="color: red;">請保持連線</b>
+            </div>
+        </div>
+        -->
+
+    </div>
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="http://unpkg.com/portal-vue"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+    $("input").change(function (e) {
+
+        for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
+
+            var file = e.originalEvent.srcElement.files[i];
+
+            var img = document.createElement("img");
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                img.src = reader.result;
+            }
+            reader.readAsDataURL(file);
+            img.setAttribute('id','handupload');
+            img.setAttribute('style','width:300px;weight:300px;')
+            $("#here").after(img);
+        }
+    });
+</script>
+<!-- 拍攝手掌距離與傷口相同-->
+手腕切齊照片長邊或短編
+
+<style type="text/css">
+    #loader {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.75) no-repeat center center;
+        z-index: 1;
+    }
+</style>
+
+
+<script type="text/javascript">
+    $('form').on('submit', function () {
+        $('#loader').show();
+        //$("#checking").show();
+    });
+
+</script>
+<!--<script>
+    var spinner = $('#loader');
+    $(function () {
+        $('form').submit(function (e) {
+            e.preventDefault();
+            spinner.show();
+         $.ajax({
+                url: 't2228.php',
+                data: $(this).serialize(),
+                method: 'post',
+                dataType: 'JSON'
+            }).done(function (resp) {
+                spinner.hide();
+                alert(resp.status);
+            });
+        });
+    });
+</script>*-->

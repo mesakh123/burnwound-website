@@ -1,0 +1,108 @@
+<head>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://unpkg.com/@popperjs/core@2" />
+     <link rel = "stylesheet"
+         href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+
+<body class='container mt-3'>
+
+    <div class = "row">
+        <form class = "col s12">
+           <div class = "row">
+              <div class = "input-field col s6">
+                 <i class = "material-icons prefix">account_circle</i>
+                 <input placeholder = "Username" value = "Mahesh" id = "name"
+                    type = "text" class = "active validate" required />
+                 <label for = "name">Username</label>
+              </div>
+              
+              <div class = "input-field col s6">      
+                 <label for = "password">Password</label>
+                 <input id = "password" type = "password" placeholder = "Password"
+                    class = "validate" required />          
+              </div>
+           </div>
+           
+           <div class = "row">
+              <div class = "input-field col s12">
+                 <input placeholder = "Email" id = "email" type = "email"
+                    class = "validate">
+                 <label for = "email">Email</label>
+              </div>
+           </div>
+           
+           <div class = "row">
+              <div class = "input-field col s12">
+                 <i class = "material-icons prefix">mode_edit</i>
+                 <textarea id = "address" class = "materialize-textarea"></textarea>
+                 <label for = "address">Address</label>
+              </div>
+           </div>
+           
+           <div class = "row">
+              <div class = "input-field col s12">
+                 <input placeholder = "Comments (Disabled)" id = "comments"
+                    type = "text" disabled />
+                 <label for = "comments">Comments</label>
+              </div>
+           </div>
+           
+           <div class = "row">
+              <div class = "input-field col s12">
+                 <p>
+                    <input id = "married" type = "checkbox" checked = "checked" />
+                    <label for = "married">Married</label>
+                 </p>
+                 
+                 <p>
+                    <input id = "single" type = "checkbox" class = "filled-in" />
+                    <label for = "single">Single</label>
+                 </p>
+                 
+                 <p>
+                    <input id = "dontknow" type = "checkbox" disabled = "disabled" />              
+                    <label for = "dontknow">Don't know (Disabled)</label>
+                 </p>
+              </div>
+           </div>
+           
+           <div class = "row">
+              <div class = "input-field col s12">
+                  <p>
+                    <input id = "male" type = "radio" name = "gender"
+                       value = "male" checked />
+                    <label for = "male">Male</label>
+                 </p>
+                 
+                 <p>
+                    <input id = "female" type = "radio" name = "gender"
+                       value = "female" checked />
+                    <label for = "female">Female</label>
+                 </p>
+                 
+                 <p>
+                    <input id = "dontknow1" type = "radio" name = "gender"
+                       value = "female" disabled />
+                    <label for = "dontknow1">Don't know (Disabled)</label>
+                 </p>
+              </div>
+           </div>           
+        </form>       
+     </div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>

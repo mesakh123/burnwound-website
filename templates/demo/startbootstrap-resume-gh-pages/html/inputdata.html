@@ -1,0 +1,96 @@
+{%extends 'demo/base.html'%}
+
+{%block content%}
+
+{%load staticfiles%}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class='container mt-3'>
+    <div class='col-12 text-center header'>
+        <h1>請輸入病人資料</h1>
+    </div>
+<div class='row text-center'>
+    <div class='col-md-8 d-flex justify-content-center mx-auto'>
+        <form action="" method="post" class="cform-form" role='form'>
+            {%csrf_token%}
+            <div class="form-group row mx-auto d-flex justify-content-center">
+
+                <label for="name" class="font-weight-bold align-self-center col-2">姓名</label>
+                <input id="name" type="text" name="name" class="cform-text form-control col-5" title="Your name" value="{%if data.name %}{{data.name}}{%endif%}">
+            </div>
+
+            <div class="form-group row mx-auto d-flex justify-content-center">
+
+                <label for="patientid" class="font-weight-bold align-self-center col-2">ID</label>
+                <input id="patientid" type="text" name="patientid" class="cform-text form-control col-5"
+                    title="Your patientid" value="{%if data.patientid %}{{data.patientid}}{%endif%}">
+            </div>
+
+            <div class="form-group row mx-auto d-flex justify-content-center">
+                <label for="age" class="font-weight-bold align-self-center col-2">年齡</label>
+                <input id="age" type="number" name="age" min="1" class="cform-text form-control col-5" value="{%if data.age %}{{data.age}}{%endif%}"
+                    title="Your patientid">
+            </div>
+
+            <div class="form-group row mx-auto d-flex justify-content-center">
+
+                <label for="gender" class="font-weight-bold align-self-end col-2">性別</label>
+                <select name="gender" id='gender' class="cform-text form-control col-5">
+                    <option value="f" {%if data.gender is 'f'%}selected{%endif%} >女</option>
+                    <option value="m" {%if data.gender is 'm'%}selected{%endif%} >男</option>
+                    <option value="o" {%if data.gender is 'o'%}selected{%endif%} >其他</option>
+
+                </select>
+            </div>
+
+            <div class="form-group row mx-auto d-flex justify-content-center">
+
+                <label for="height" class="font-weight-bold align-self-end col-2">身高</label>
+                <input id="height" type="number" name="height" min="1" class="cform-text form-control col-5" value="{{data.height}}"
+                   >
+            </div>
+
+            <div class="form-group row mx-auto d-flex justify-content-center">
+
+                <label for="weight" class="font-weight-bold align-self-end col-2">體重</label>
+                <input id="weight" type="number" name="weight" min="1" class="cform-text form-control col-5" value="{{data.weight}}"
+                   >
+            </div>
+
+            <div class="form-group row mx-auto d-flex justify-content-center">
+
+                <label for="typeoption" class="font-weight-bold align-self-end col-2">類別</label>
+                <select name="typeoption" id='typeoption' class="cform-text form-control col-5">
+                    <option value="scald" {%if data.typeoption is "scald"%}selected{%endif%} >Scald</option>
+                    <option value="grease" {%if data.typeoption is "grease"%}selected{%endif%} >Grease</option>
+                    <option value="contact" {%if data.typeoption is "contact"%}selected{%endif%} >Contact</option>
+                    <option value="flame" {%if data.typeoption is "flame"%}selected{%endif%} >Flame</option>
+                    <option value="chemical" {%if data.typeoption is "chemical"%}selected{%endif%} >Chemical</option>
+                    <option value="electric" {%if data.typeoption is "electric"%}selected{%endif%} >Electric</option>
+                    <option value="other" {%if data.typeoption is "other"%}selected{%endif%} >Other</option>
+                </select>
+            </div>
+
+
+           <div class="form-group row mx-auto d-flex justify-content-center">
+                <label for="comments" class="font-weight-bold col-2">備註</label>
+                <textarea name="comments" cols="40" rows="10" title="Drop us a line." class='form-control col-5'>{{data.comments}}</textarea>
+            </div>
+
+            <div class='form-group row mx-auto d-flex justify-content-center'>
+
+                    <button id="clear" name="cleardata" class="btn btn-lg btn-secondary mr-1" type="submit" >清除</button>
+                    <button id="submit" value="submit" name="submit" class="btn btn-lg btn-primary" type="submit" >送出</button>
+            </div>
+
+
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+{%endblock%}

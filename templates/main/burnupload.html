@@ -1,0 +1,101 @@
+{%extends 'main/base.html' %}
+
+{% load staticfiles%}
+{%block content%}
+<!-- download attribute forces the browser to download instead of navigating -->
+
+
+<style type="text/css">
+    input[type="file"] {
+      display: none;
+  }
+  .custom-file-upload {
+      border: 1px solid #ccc;
+      display: inline-block;
+      padding: 10px 12px;
+      cursor: pointer;
+  }
+</style>
+
+<!-- List of uploaded documents
+   -->
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}" >
+
+    <div class='container mt-3'>
+        <div class='col-12 text-center header'>
+            <h1>請輸上傳傷口照片</h1>
+        </div>
+<div class='row'>
+    {% if message%}
+    <script>
+        alert('{{ message }}');
+    </script>
+    {%endif%}
+    <form method="POST" id="POItablediv" class=' col-12' action="" enctype="multipart/form-data">
+        {%csrf_token%}
+
+        <div class='row'>
+          <div class='col-12 d-flex justify-content-end'>
+              <label class="custom-file-upload btn btn-info ">
+                  <input class='input-file' type="file" accept="image/*"  multiple  />
+                  <i class="fa fa-cloud-upload"></i> 新增
+              </label>
+          </div>
+      </div>
+        <table id="POITable" class="table">
+            <thead class="thead-dark text-center">
+                <tr>
+                    <th>#</th>
+                    <th>圖片</th>
+                    <th>刪除</th>
+                </tr>
+            </thead>
+            {% if burn_image_session%}
+
+            <tbody>
+                {% for is in burn_image_session%}
+                <tr class="text-center">
+                  <td>{{forloop.counter}}</td>
+                  <td>
+                      <img src="{{is}}" alt="images" name="images" value="{{is}}" class="img-fluid upload-image" style="max-width:200px;max-height:200px;">
+                  </td>
+                  <td class="align-middle">
+                      <button type="button" class="btn btn-danger align-self-center" onclick="deleteRow(this)"><i class="fas fa-minus"></i></button>
+                  </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+            {%endif%}
+            <tbody>
+                <!--{% if documents %}
+                    {% for document in documents %}
+                    <tr class='text-center'>
+                    <td>{{forloop.counter}}</td>
+                    <td><img src="{{ document.docfile.url }}" class="img-fluid" style="max-width:200px;max-height:200px;"/></td>
+                    <td class='align-middle'>
+                        <button class='btn btn-danger' type="button" id="delPOIbutton" onclick="deleteRow(this)"><i
+                                class="fas fa-minus"></i>
+                        </button>
+                    </td>
+                    </tr>
+                    {% endfor %}
+                {%endif%}
+                -->
+            </tbody>
+        </table>
+
+        <div class='d-flex justify-content-center'>
+            <a class='btn btn-secondary mr-2' href="/">回上一頁</a>
+            <button type="submit" class="btn btn-primary" value="upload" >Submit</button>
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript" src="{% static 'js/burnupload.js' %}">
+
+</script>
+
+
+ {%endblock%}

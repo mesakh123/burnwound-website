@@ -1,0 +1,107 @@
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://unpkg.com/@popperjs/core@2" />
+    <link rel="stylesheet" href="./style.css">
+
+
+</head>
+
+<body>
+    <div class='container mt-3'>
+        <div align='center'>
+            <div class='col-12 text-center header'>
+                <h1>請輸入病人資料</h1>
+            </div>
+
+
+            <div class='col-12'>
+                <form action="upload.html" method="post" class="cform-form">
+                    <p><input type="text" name="name" placeholder="姓名" class="cform-text" size="40" title="Your name">
+                    </p>
+                    <p><input type="text" name="patientid" placeholder="病歷號" class="cform-text" size="40"
+                            title="Your email"></p>
+
+
+
+                    <div class="form-group">
+                        <label for="age" class="font-weight-bold  mt-1">年齡</label>
+                        <p>
+                            <input type="number" size="4" id='age' name="age" min="1" class="cform-text">
+                        </p>
+                    </div>
+
+
+                    <div class="form-group ">
+                        <label for="genderoption" class="font-weight-bold mt-1">性別</label>
+                        <p><select name="gender" id='genderoption'>
+                                <option value="f">女</option>
+                                <option value="m">男</option>
+                            </select>
+                        </p>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="height" class="font-weight-bold  mt-1">身高</label>
+                        <p>
+                            <input type="number" size="4" id='height' name="height" min="1" required class="cform-text">
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="weight" class="font-weight-bold  mt-1">體重</label>
+                        <p>
+                            <input type="number" size="4" id='height' name="weight" min="1" required class="cform-text">
+                        </p>
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="typeoption" class="font-weight-bold mt-1">類別</label>
+                        <p><select name="typeoption" id='typeoption'>
+                                <option value="scald">Scald</option>
+                                <option value="grease">Grease</option>
+                                <option value="contact">Contact</option>
+                                <option value="flame">Flame</option>
+                                <option value="chemical">Chemical</option>
+                                <option value="electric">Electric</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </p>
+                    </div>
+
+                    <p><textarea name="comments" cols="40" rows="10" title="Drop us a line."
+                            placeholder="備註"></textarea></p>
+
+                    <div class='form-group'>
+                        <div class='col-md-12'>
+
+                            <input type="button" class='btn btn-secondary' value="清除">
+                            <button id="submit" name="submit" class="btn btn-primary">送出</button>
+                        </div>
+                    </div>
+                  
+
+
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="http://unpkg.com/portal-vue"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
