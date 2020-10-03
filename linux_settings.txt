@@ -1,0 +1,42 @@
+
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[program:gunicorn]
+directory=/home/ubuntu/myproject/website/
+WorkingDirectory=/home/ubuntu/myproject/website/
+command=/home/ubuntu/myproject/myprojectenv/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/myproject/website/website.sock website.wsgi:application
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/gunicorn/gunicorn.out.log
+stdout_logfile=/var/log/gunicorn/gunicorn.err.log
+user=ubuntu
+group=www-data
+
+[group:guni]
+programs:gunicorn
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+server {
+   listen 80;
+    server_name 103.124.72.45;
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/ubuntu/myproject/website/;
+    }
+
+    location /media/ {
+        root /home/ubuntu/myproject/website/;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/ubuntu/myproject/website/website.sock;
+    }
+
+}

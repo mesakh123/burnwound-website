@@ -56,7 +56,9 @@ class HandDocument(models.Model):
     hand_predict_docfile = models.ImageField(upload_to='documents/predict/hand',blank=True)
     file_location = models.CharField(default="",max_length=2048)
     predicted = models.BooleanField(default=False)
+    process_predict = models.BooleanField(default=False)
     hand_pixel = models.IntegerField(default=0)
+
     hand_result = models.OneToOneField(PredictResult, on_delete=models.SET_NULL,blank=True,null=True)
     def __str__(self):
         return str(self.hand_docfile_resized.path)
@@ -67,6 +69,7 @@ class BurnDocument(models.Model):
     file_location = models.CharField(default="",max_length=2048)
     burn_predict_docfile = models.ImageField(upload_to='documents/predict/burn',blank=True)
     predicted = models.BooleanField(default=False)
+    process_predict = models.BooleanField(default=False)
     burn_pixel = models.IntegerField(default=0)
     burn_result = models.ForeignKey(PredictResult, on_delete=models.SET_NULL,blank=True,null=True)
     def __str__(self):

@@ -9,6 +9,7 @@ from .mrcnn import visualize
 from .models import HandDocument,BurnDocument,PatientData
 from .burn_inferencing.saved_model_inference import detect_mask_single_image_using_grpc as burn_detect_mask
 from .hand_inferencing.saved_model_inference import detect_mask_single_image_using_grpc as hand_detect_mask
+from website.settings import PLATFORMTYPE
 @background(schedule=0)
 def predict_image_in_background(id,types='burn'):
     if types=='burn':
@@ -18,19 +19,24 @@ def predict_image_in_background(id,types='burn'):
         print("Predict hand started")
         class_names = ['BG','palm']
         location = HandDocument.objects.filter(pk=id).first()
-    if location.predicted is False:
-        folder , file_name = str(location).rsplit("\\",1)
-        image = cv2.imread(str(location),1)[:,:,::-1]
-        if types=='burn':
-            result = burn_detect_mask(image)
-            predict_image_field = location.burn_predict_docfile
-        else:
-            result = hand_detect_mask(image)
-            predict_image_field = location.hand_predict_docfile
 
-        if result is not None:
-            predict_result = visualize.save_image(image, "test", result['rois'], result['mask'],
-                        result['class'], result['scores'], class_names,scores_thresh=0.85)
+    if PLATFORMTYPE is 'Windows':
+        folder , file_name = str(location).rsplit("\\",1)
+    else:
+        folder , file_name = str(location).rsplit("/",1)
+
+    image = cv2.imread(str(location),1)[:,:,::-1]
+    if types=='burn':
+        result = burn_detect_mask(image)
+        predict_image_field = location.burn_predict_docfile
+    else:
+        result = hand_detect_mask(image)
+        predict_image_field = location.hand_predict_docfile
+
+    if result is not None:
+        predict_result = visualize.save_image(image, "test", result['rois'], result['mask'],
+                    result['class'], result['scores'], class_names,scores_thresh=0.85)
+        if predict_result:
             buffer = BytesIO()
             predict_result.save(fp=buffer,format='JPEG')
             pillow_image = ContentFile(buffer.getvalue())
@@ -49,8 +55,8 @@ def predict_image_in_background(id,types='burn'):
                     None
                 )
             )
-        location.predicted = True
-        location.save()
+    location.predicted = True
+    location.save()
     print("Predict success!")
 """    if types is 'burn':
         try:

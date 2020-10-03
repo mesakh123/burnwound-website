@@ -12,6 +12,10 @@
       </tr>
     </thead>
     <tbody>
+    <tr>
+      <td>預測ID</td>
+      <td>{{result_code}}</td>
+    </tr>
       <tr>
         <td>傷口共約</td>
         {%if tbsa_result%}
@@ -19,6 +23,10 @@
         {%else%}
           <td>無法辨識</td>
         {%endif%}
+      </tr>
+      <tr>
+        <td>預測ID</td>
+        <td>{{result_code}}</td>
       </tr>
       <tr>
         <td>前8小時點</td>
@@ -31,7 +39,7 @@
     </tbody>
   </table>
 
-  {%if hand_image_session %}
+  {%if hand_image_dict %}
     <table class="col-12 table-borderlesstext-center my-2">
       <thead class=" d-flex justify-content-center ">
         <tr>
@@ -39,19 +47,17 @@
         </tr>
       </thead>
       <tbody>
-        {% for k in hand_image_session %}
+        {% for k,v in hand_image_dict.items %}
         <tr>
             <td class=" d-flex justify-content-center " >
-              <img src="{{k}}" alt="{{v}}" style="max-width:200px;max-height:200px;"/>
+              <img src="/media/{{v}}" alt="{{k}}" style="max-width:300px;max-height:300px;"/>
             </td>
         </tr>
         {%endfor%}
       </tbody>
     </table>
-  {%else%}
-    <p>無任何手掌照片</p>
   {%endif%}
-  {%if burn_image_session %}
+  {%if burn_image_dict %}
     <table class="col-12 table-borderless text-center my-2">
       <thead>
         <tr>
@@ -59,10 +65,10 @@
         </tr>
       </thead>
     <tbody>
-      {% for k in burn_image_session %}
+      {% for k,v in burn_image_dict.items %}
       <tr>
         <td>
-          <img src="{{k}}" alt="{{v}}" style="max-width:200px;max-height:200px;">
+          <img src="/media/{{v}}" alt="{{k}}" style="max-width:300px;max-height:300px;">
         </td>
       </tr>
       {%endfor%}
@@ -70,8 +76,6 @@
 
 
     </table>
-  {%else%}
-    <p>無任何燙傷照片</p>
   {%endif%}
 
 {%endblock%}
