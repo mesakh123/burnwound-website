@@ -8,10 +8,7 @@
       window.location.reload();
     }
   });
-<<<<<<< HEAD
 
-=======
->>>>>>> e281625346f12ddae273a486a5ef4fea1ca65dda
   $('form').submit(function(e) {
           e.preventDefault();
          var img_ele = document.getElementsByClassName("upload-image")
@@ -50,17 +47,10 @@
                       //this.reset();   //Here form fields will be cleared.
                   });
                   if (xmlHttp.status == 200) {
-<<<<<<< HEAD
                     top.location.href ="/demo/handupload/";
                   }
                   else{
                     top.location.href = '/demo/';
-=======
-                    top.location.href ="/handupload/";
-                  }
-                  else{
-                    top.location.href = '/';
->>>>>>> e281625346f12ddae273a486a5ef4fea1ca65dda
                   }
                 }
             });
@@ -74,23 +64,15 @@
   function convertFile(file) {
       return new Promise((resolve,reject)=>{
           let reader = new FileReader()
-<<<<<<< HEAD
           reader.readAsDataURL(file)
           reader.onload = () => { resolve(reader.result) }
           reader.onerror = () => { reject(reader.error) }
       });
-=======
-          reader.onload = () => { resolve(reader.result) }
-          reader.onerror = () => { reject(reader.error) }
-          reader.readAsDataURL(file)
-      })
->>>>>>> e281625346f12ddae273a486a5ef4fea1ca65dda
   }
   $("input.input-file").change(function(e) {
       console.log("input starting");
       console.log("Table length : ",document.getElementById("POITable").rows.length)
           var files = e.originalEvent.srcElement.files;
-<<<<<<< HEAD
 
           $.map(files, file =>convertFile(file).
             then((data) =>{
@@ -98,15 +80,6 @@
             }));
       $("input.input-file").val("");
 
-=======
-          $.map(files, file => {
-            convertFile(file).
-              then(data => {
-                  insRow(URL.createObjectURL(file),data);
-                })
-              .catch(err => console.log(err));
-          });
->>>>>>> e281625346f12ddae273a486a5ef4fea1ca65dda
   });
     var arrHead = new Array();	// array for header.
     arrHead = ['id', 'image', 'del',];

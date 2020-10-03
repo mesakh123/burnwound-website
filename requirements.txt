@@ -29,10 +29,6 @@ json-delta==2.0
 kiwisolver==1.2.0
 lxml==4.5.2
 matplotlib==3.3.2
-<<<<<<< HEAD
-=======
-mysqlclient==1.3.12
->>>>>>> e281625346f12ddae273a486a5ef4fea1ca65dda
 networkx==2.5
 numpy==1.19.2
 opencv-python==4.4.0.44

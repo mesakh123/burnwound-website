@@ -41,13 +41,8 @@ function insRow(image_url,image) {
     ele.setAttribute('name', "images");
     ele.setAttribute('value',image);
     ele.setAttribute('class', "img-fluid upload-image");
-<<<<<<< HEAD
     ele.setAttribute('style',style="max-width:300px;max-height:300px;");
     $("#here").after(ele);
-=======
-    ele.setAttribute('style',style="max-width:200px;max-height:200px;");
-        $("#here").after(ele);
->>>>>>> e281625346f12ddae273a486a5ef4fea1ca65dda
 }
 
 
@@ -78,11 +73,7 @@ function insRow(image_url,image) {
                   });
                   return xhr;
                 },
-<<<<<<< HEAD
                 url: "",
-=======
-                url: "/handupload/",
->>>>>>> e281625346f12ddae273a486a5ef4fea1ca65dda
                 type: 'POST',
                 data: formData,
                 cache: false,
@@ -94,17 +85,10 @@ function insRow(image_url,image) {
                       //this.reset();   //Here form fields will be cleared.
                   });
                   if (xmlHttp.status == 200) {
-<<<<<<< HEAD
                     top.location.href ="/demo/inputdata/";
                   }
                   else{
                     top.location.href = '/demo/';
-=======
-                    top.location.href ="/inputdata/";
-                  }
-                  else{
-                    top.location.href = '/';
->>>>>>> e281625346f12ddae273a486a5ef4fea1ca65dda
                   }
                 }
             });
