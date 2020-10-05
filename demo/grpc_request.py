@@ -25,6 +25,7 @@ def predict_image_in_background(id,types='burn'):
     else:
         folder , file_name = str(location).rsplit("/",1)
 
+    print("Location : ",location)
     image = cv2.imread(str(location),1)[:,:,::-1]
     if types=='burn':
         result = burn_detect_mask(image)

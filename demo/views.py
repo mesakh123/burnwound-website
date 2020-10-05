@@ -125,7 +125,7 @@ def result(request):
             for v in burn_pixel_dict.values():
                 burn_total+=v
             if hand_total!=0 and burn_total!=0:
-                tbsa_result = burn_total*0.8/hand_total
+                tbsa_result = burn_total*0.5/hand_total
                 predictResult.predict_tbsa = tbsa_result
                 predictResult.save()
             else:

@@ -102,6 +102,8 @@ def upload_process(files,types="burn"):
             fileTemp.write(f)
             filenameRe = get_random_string(15)
             f_ori = File(fileTemp, name=filenameRe+"-ori.png")
+            #fileTemp = NamedTemporaryFile()
+            #fileTemp.write()
             f_resized = File(fileTemp, name=filenameRe+"-resized.png")
             if types=="burn":
                 newdoc = BurnDocument(burn_docfile_ori = f_ori,burn_docfile_resized=f_resized)
@@ -110,6 +112,7 @@ def upload_process(files,types="burn"):
             newdoc.save()
             newdoc.file_location = str(newdoc).split("website")[1].replace("ori",'resized')
             newdoc.save()
+            cv2.imwrite(str(newdoc),image_np[:,:,::-1])
             image_ids.append(newdoc.id)
             file_name =str(newdoc)
             if PLATFORMTYPE is 'Windows':
