@@ -29,7 +29,7 @@
 <div class='row'>
     {% if message%}
     <script>
-        alert('{{ message }}');
+        swal('{{ message }}', '', 'error');
     </script>
     {%endif%}
     <form method="POST" id="POItablediv" class=' col-12' action="" enctype="multipart/form-data">

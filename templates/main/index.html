@@ -9,17 +9,21 @@
 <!-- Page Content-->
 <div class="container-fluid p-0">
     <!-- About-->
-    <section class="resume-section" id="about">
+    <section class="resume-section" id="research">
         <div class="resume-section-content">
             <h1 class="mb-0">
-                Clarence
-                <span class="text-primary">Taylor</span>
+                我們的
+                <span class="text-primary">研究</span>
             </h1>
             <div class="subheading mb-5">
                 3542 Berry Street · Cheyenne Wells, CO 80810 · (317) 585-8468 ·
                 <a href="mailto:name@email.com">name@email.com</a>
             </div>
-            <p class="lead mb-5">I am experienced in leveraging agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.</p>
+            <p class="lead mb-5">
+                人工智慧協助燒燙傷診斷 
+                根據WHO的統計，每年因燒燙傷死亡的人數約有265,000人，在美國，每年因燒燙傷而到急診就醫約有10,000,000人次，在台灣，每年因燒燙傷住院的病患也有7,000人次。燒燙傷是與我們生活息息相關的意外，煮菜或是洗澡都有可能造成。 
+                有效的燒燙傷治療，需要對燒燙傷的面積與深度做準確的判斷，然而這需要靠大量的臨床經驗，幸好目前有的儀器可用於燒燙傷深度的診斷，像是雷射督普勒、紅外線熱像儀等；然而對燒燙傷面積的判斷卻仍是用目測的估計，因此各國的文獻都指出(Harish V, Burns. 2015. Baartmans MG, Injury. 2012.)，這樣的方式，使得急診或門診醫師與整形外科醫師，在燒傷面積的估計上有很大的差異，不僅如此，不同燒傷專家對同一位病患的估計也有很大的差異(Giretzlehner M, Burns. 2013)，準確地知道燒燙傷面積是非常重要，因為這與給予輸液的量，給予的營養素，是否需要加護病房，醫療院所有無能力可以照護有關。 
+                為了解決這個問題，我們收集了上千張燒燙傷的影像，並由多位整形外科醫師對這些影像標註，接著我們以多個深度學習的演算法，訓練後的模型，可以自動的診斷出各種深度燒燙傷的範圍。為了算出燒燙傷的面積，我們另外訓練了其他模型，可以準確的判斷手掌範圍，由於手掌(不含手指)在兒童或成人，都是0.5% 全身體表面積。在相同或已知的拍照距離紀錄病患傷口與手掌，就可以以人工智慧的模型計算出燒傷面積。 </p>
             <div class="social-icons">
                 <a class="social-icon" href="#"><i class="fab fa-linkedin-in"></i></a>
                 <a class="social-icon" href="#"><i class="fab fa-github"></i></a>
@@ -30,70 +34,70 @@
     </section>
     <hr class="m-0" />
     <!-- Experience-->
-    <section class="resume-section" id="experience">
+    <section class="resume-section" id="trainingModel">
         <div class="resume-section-content">
-            <h2 class="mb-5">Experience</h2>
+            <h2 class="mb-5">深度學習的模型</h2>
             <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                 <div class="flex-grow-1">
-                    <h3 class="mb-0">Senior Web Developer</h3>
-                    <div class="subheading mb-3">Intelitec Solutions</div>
-                    <p>Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.</p>
+                    <h3 class="mb-0">Mask-RCNN</h3>
+                    <!-- <div class="subheading mb-3">Intelitec Solutions</div> -->
+                    <img src="/static/images/maskrcnn.png" style="width: 85%"></img>
                 </div>
-                <div class="flex-shrink-0"><span class="text-primary">March 2013 - Present</span></div>
-            </div>
-            <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                <div class="flex-grow-1">
-                    <h3 class="mb-0">Web Developer</h3>
-                    <div class="subheading mb-3">Intelitec Solutions</div>
-                    <p>Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.</p>
-                </div>
-                <div class="flex-shrink-0"><span class="text-primary">December 2011 - March 2013</span></div>
+                <!-- <div class="flex-shrink-0"><span class="text-primary">March 2013 - Present</span></div> -->
             </div>
             <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                 <div class="flex-grow-1">
-                    <h3 class="mb-0">Junior Web Designer</h3>
-                    <div class="subheading mb-3">Shout! Media Productions</div>
-                    <p>Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail. Keeping your eye on the ball while performing a deep dive on the start-up mentality to derive convergence on cross-platform integration.</p>
+                    <h3 class="mb-0">U-Net</h3>
+                    <!-- <div class="subheading mb-3">Intelitec Solutions</div> -->
+                    <img src="/static/images/unet.png" style="width: 85%"></img>
                 </div>
-                <div class="flex-shrink-0"><span class="text-primary">July 2010 - December 2011</span></div>
+                <!-- <div class="flex-shrink-0"><span class="text-primary">December 2011 - March 2013</span></div> -->
             </div>
-            <div class="d-flex flex-column flex-md-row justify-content-between">
+            <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                 <div class="flex-grow-1">
-                    <h3 class="mb-0">Web Design Intern</h3>
-                    <div class="subheading mb-3">Shout! Media Productions</div>
-                    <p>Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits. Dramatically visualize customer directed convergence without revolutionary ROI.</p>
+                    <h3 class="mb-0">ResNet</h3>
+                    <!-- <div class="subheading mb-3">Shout! Media Productions</div> -->
+                    <img src="/static/images/resnet.png" style="width: 85%"></img>
                 </div>
-                <div class="flex-shrink-0"><span class="text-primary">September 2008 - June 2010</span></div>
-            </div>
+                <!-- <div class="flex-shrink-0"><span class="text-primary">July 2010 - December 2011</span></div> -->
+            </div>        
         </div>
     </section>
     <hr class="m-0" />
     <!-- Education-->
-    <section class="resume-section" id="education">
+    <section class="resume-section" id="diagnosisCase">
         <div class="resume-section-content">
-            <h2 class="mb-5">Education</h2>
+            <h2 class="mb-5">診斷案例</h2>
             <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                 <div class="flex-grow-1">
-                    <h3 class="mb-0">University of Colorado Boulder</h3>
-                    <div class="subheading mb-3">Bachelor of Science</div>
-                    <div>Computer Science - Web Development Track</div>
-                    <p>GPA: 3.23</p>
+                    <h3 class="mb-0">淺二度燙傷</h3>
+                    <!-- <div class="subheading mb-3">Bachelor of Science</div> -->
+                    <!-- <div>Computer Science - Web Development Track</div> -->
+                    <img src="/static/images/level2shallowscald.png" style="width: 85%"></img>
                 </div>
-                <div class="flex-shrink-0"><span class="text-primary">August 2006 - May 2010</span></div>
+                <!-- <div class="flex-shrink-0"><span class="text-primary">August 2006 - May 2010</span></div> -->
             </div>
             <div class="d-flex flex-column flex-md-row justify-content-between">
                 <div class="flex-grow-1">
-                    <h3 class="mb-0">James Buchanan High School</h3>
-                    <div class="subheading mb-3">Technology Magnet Program</div>
-                    <p>GPA: 3.56</p>
+                    <h3 class="mb-0">深二度燙傷</h3>
+                    <!-- <div class="subheading mb-3">Technology Magnet Program</div> -->
+                    <img src="/static/images/level2deepscald.png" style="width: 85%"></img>
                 </div>
-                <div class="flex-shrink-0"><span class="text-primary">August 2002 - May 2006</span></div>
+                <!-- <div class="flex-shrink-0"><span class="text-primary">August 2002 - May 2006</span></div> -->
+            </div>
+            <div class="d-flex flex-column flex-md-row justify-content-between">
+                <div class="flex-grow-1">
+                    <h3 class="mb-0">三度燙傷</h3>
+                    <!-- <div class="subheading mb-3">Technology Magnet Program</div> -->
+                    <img src="/static/images/level3scald.png" style="width: 85%"></img>
+                </div>
+                <!-- <div class="flex-shrink-0"><span class="text-primary">August 2002 - May 2006</span></div> -->
             </div>
         </div>
     </section>
-    <hr class="m-0" />
+    <!-- <hr class="m-0" /> -->
     <!-- Skills-->
-    <section class="resume-section" id="skills">
+    <!-- <section class="resume-section" id="skills">
         <div class="resume-section-content">
             <h2 class="mb-5">Skills</h2>
             <div class="subheading mb-3">Programming Languages & Tools</div>
@@ -131,19 +135,19 @@
                 </li>
             </ul>
         </div>
-    </section>
-    <hr class="m-0" />
+    </section> -->
+    <!-- <hr class="m-0" /> -->
     <!-- Interests-->
-    <section class="resume-section" id="interests">
+    <!-- <section class="resume-section" id="interests">
         <div class="resume-section-content">
             <h2 class="mb-5">Interests</h2>
             <p>Apart from being a web developer, I enjoy most of my time being outdoors. In the winter, I am an avid skier and novice ice climber. During the warmer months here in Colorado, I enjoy mountain biking, free climbing, and kayaking.</p>
             <p class="mb-0">When forced indoors, I follow a number of sci-fi and fantasy genre movies and television shows, I am an aspiring chef, and I spend a large amount of my free time exploring the latest technology advancements in the front-end web development world.</p>
         </div>
     </section>
-    <hr class="m-0" />
+    <hr class="m-0" /> -->
     <!-- Awards-->
-    <section class="resume-section" id="awards">
+    <!-- <section class="resume-section" id="awards">
         <div class="resume-section-content">
             <h2 class="mb-5">Awards & Certifications</h2>
             <ul class="fa-ul mb-0">
@@ -187,6 +191,6 @@
                 </li>
             </ul>
         </div>
-    </section>
+    </section> -->
 </div>
 {%endblock%}
