@@ -9,7 +9,7 @@ from .mrcnn import visualize
 from .models import HandDocument,BurnDocument,PatientData
 #from .burn_inferencing.saved_model_inference import detect_mask_single_image_using_grpc as burn_detect_mask
 #from .hand_inferencing.saved_model_inference import detect_mask_single_image_using_grpc as hand_detect_mask
-import request
+import requests
 import base64
 import json
 
