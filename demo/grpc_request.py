@@ -40,7 +40,7 @@ def predict_image_in_background(id,types='burn'):
         result = requests.post(url, data=im_encode, timeout=600).json()
         predict_image_field = location.burn_predict_docfile
     else:
-        url = 'http://127.0.0.1:9000/v1/models/mask_rcnn_burn_1000:predict'
+        url = 'http://103.124.72.45:9000/v1/models/mask_rcnn_burn_1000:predict'
         #result = hand_detect_mask(image)
         result = requests.post(url, data=im_encode, timeout=600).json()
         predict_image_field = location.hand_predict_docfile
@@ -48,7 +48,7 @@ def predict_image_in_background(id,types='burn'):
         for k,v in result.items():
             result[k] = np.array(v)
         predict_result = visualize.save_image(image, "test", result['rois'], result['masks'],
-                    result['class'], result['scores'], class_names,scores_thresh=0.85)
+                    result['class_ids'], result['scores'], class_names,scores_thresh=0.85)
         if predict_result:
             buffer = BytesIO()
             predict_result.save(fp=buffer,format='JPEG')
