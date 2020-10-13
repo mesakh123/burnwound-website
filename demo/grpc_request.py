@@ -40,7 +40,7 @@ def predict_image_in_background(id,types='burn'):
         result = requests.post(url, data=im_encode, timeout=600).json()
         predict_image_field = location.burn_predict_docfile
     else:
-        url = 'http://103.124.72.45:9000/v1/models/mask_rcnn_burn_1000:predict'
+        url = 'http://103.124.72.45:9000/v1/models/mask_rcnn_hand_1000:predict'
         #result = hand_detect_mask(image)
         result = requests.post(url, data=im_encode, timeout=600).json()
         predict_image_field = location.hand_predict_docfile
