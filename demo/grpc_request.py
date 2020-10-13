@@ -45,7 +45,7 @@ def predict_image_in_background(id,types='burn'):
         result = requests.post(url, data=im_encode, timeout=600).json()
         predict_image_field = location.hand_predict_docfile
     if len(result['rois'])!=0:
-        for k,v in result:
+        for k,v in result.items():
             result[k] = np.array(v)
         predict_result = visualize.save_image(image, "test", result['rois'], result['masks'],
                     result['class'], result['scores'], class_names,scores_thresh=0.85)
