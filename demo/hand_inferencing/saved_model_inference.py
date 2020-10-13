@@ -43,13 +43,21 @@ def detect_mask_single_image_using_grpc(image):
     anchors = preprocess_obj.get_anchors(image_shape)
     anchors = np.broadcast_to(anchors, (molded_images.shape[0],) + anchors.shape)
 
-
-    request.inputs[saved_model_config.INPUT_IMAGE].CopyFrom(
-        tf.contrib.util.make_tensor_proto(molded_images, shape=molded_images.shape))
-    request.inputs[saved_model_config.INPUT_IMAGE_META].CopyFrom(
-        tf.contrib.util.make_tensor_proto(image_metas, shape=image_metas.shape))
-    request.inputs[saved_model_config.INPUT_ANCHORS].CopyFrom(
-        tf.contrib.util.make_tensor_proto(anchors, shape=anchors.shape))
+    print("tensorflow version : ",tf.__version__[0])
+    if int(tf.__version__[0]) >= 2 :
+        request.inputs[saved_model_config.INPUT_IMAGE].CopyFrom(
+            tf.make_tensor_proto(molded_images, shape=molded_images.shape))
+        request.inputs[saved_model_config.INPUT_IMAGE_META].CopyFrom(
+            tf.make_tensor_proto(image_metas, shape=image_metas.shape))
+        request.inputs[saved_model_config.INPUT_ANCHORS].CopyFrom(
+            tf.make_tensor_proto(anchors, shape=anchors.shape))
+    else:
+        request.inputs[saved_model_config.INPUT_IMAGE].CopyFrom(
+            tf.contrib.util.make_tensor_proto(molded_images, shape=molded_images.shape))
+        request.inputs[saved_model_config.INPUT_IMAGE_META].CopyFrom(
+            tf.contrib.util.make_tensor_proto(image_metas, shape=image_metas.shape))
+        request.inputs[saved_model_config.INPUT_ANCHORS].CopyFrom(
+            tf.contrib.util.make_tensor_proto(anchors, shape=anchors.shape))
 
     try:
         result = stub.Predict(request,30)#(request,10.0)

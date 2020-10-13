@@ -7,8 +7,12 @@ from django.core.files.base import ContentFile
 import numpy as np
 from .mrcnn import visualize
 from .models import HandDocument,BurnDocument,PatientData
-from .burn_inferencing.saved_model_inference import detect_mask_single_image_using_grpc as burn_detect_mask
-from .hand_inferencing.saved_model_inference import detect_mask_single_image_using_grpc as hand_detect_mask
+#from .burn_inferencing.saved_model_inference import detect_mask_single_image_using_grpc as burn_detect_mask
+#from .hand_inferencing.saved_model_inference import detect_mask_single_image_using_grpc as hand_detect_mask
+import request
+import base64
+import json
+
 from website.settings import PLATFORMTYPE
 @background(schedule=0)
 def predict_image_in_background(id,types='burn'):
@@ -24,24 +28,32 @@ def predict_image_in_background(id,types='burn'):
         folder , file_name = str(location).rsplit("\\",1)
     else:
         folder , file_name = str(location).rsplit("/",1)
-
+    file_type = file_name.split(".")[-1]
     print("Location : ",location)
+
     image = cv2.imread(str(location),1)[:,:,::-1]
+    retval, buffer = cv2.imencode("."+file_type, image)
+    im_encode = base64.b64encode(buffer)
     if types=='burn':
-        result = burn_detect_mask(image)
+        url = 'http://103.124.73.74:9000/v1/models/mask_rcnn_burn_1000:predict'
+        #result = burn_detect_mask(image)
+        result = requests.post(url, data=im_encode, timeout=600).json()
         predict_image_field = location.burn_predict_docfile
     else:
-        result = hand_detect_mask(image)
+        url = 'http://127.0.0.1:9000/v1/models/mask_rcnn_burn_1000:predict'
+        #result = hand_detect_mask(image)
+        result = requests.post(url, data=im_encode, timeout=600).json()
         predict_image_field = location.hand_predict_docfile
-
-    if result is not None:
-        predict_result = visualize.save_image(image, "test", result['rois'], result['mask'],
+    if len(result['rois'])!=0:
+        for k,v in result:
+            result[k] = np.array(v)
+        predict_result = visualize.save_image(image, "test", result['rois'], result['masks'],
                     result['class'], result['scores'], class_names,scores_thresh=0.85)
         if predict_result:
             buffer = BytesIO()
             predict_result.save(fp=buffer,format='JPEG')
             pillow_image = ContentFile(buffer.getvalue())
-            mask_area = np.reshape(result['mask'], (-1, result['mask'].shape[-1])).astype(np.float32).sum()
+            mask_area = np.reshape(result['masks'], (-1, result['masks'].shape[-1])).astype(np.float32).sum()
 
             if types=='burn':
                 location.burn_pixel = mask_area
