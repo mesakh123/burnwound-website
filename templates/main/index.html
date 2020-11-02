@@ -10,7 +10,11 @@
 <div class="container-fluid p-0">
     <!-- About-->
     <section class="resume-section" id="research">
-        <div class="resume-section-content">
+
+        <div class="resume-section-content" >
+          <div class="">
+            <img style="width:100%;max-height:300px;" src="{%static 'images/description_background.jpg' %}" alt="">
+          </div>
             <h1 class="mb-0">
                 我們的
                 <span class="text-primary">研究</span>
@@ -20,9 +24,9 @@
                 <a href="mailto:name@email.com">name@email.com</a>
             </div>
             <p class="lead mb-5">
-                人工智慧協助燒燙傷診斷 
-                根據WHO的統計，每年因燒燙傷死亡的人數約有265,000人，在美國，每年因燒燙傷而到急診就醫約有10,000,000人次，在台灣，每年因燒燙傷住院的病患也有7,000人次。燒燙傷是與我們生活息息相關的意外，煮菜或是洗澡都有可能造成。 
-                有效的燒燙傷治療，需要對燒燙傷的面積與深度做準確的判斷，然而這需要靠大量的臨床經驗，幸好目前有的儀器可用於燒燙傷深度的診斷，像是雷射督普勒、紅外線熱像儀等；然而對燒燙傷面積的判斷卻仍是用目測的估計，因此各國的文獻都指出(Harish V, Burns. 2015. Baartmans MG, Injury. 2012.)，這樣的方式，使得急診或門診醫師與整形外科醫師，在燒傷面積的估計上有很大的差異，不僅如此，不同燒傷專家對同一位病患的估計也有很大的差異(Giretzlehner M, Burns. 2013)，準確地知道燒燙傷面積是非常重要，因為這與給予輸液的量，給予的營養素，是否需要加護病房，醫療院所有無能力可以照護有關。 
+                人工智慧協助燒燙傷診斷
+                根據WHO的統計，每年因燒燙傷死亡的人數約有265,000人，在美國，每年因燒燙傷而到急診就醫約有10,000,000人次，在台灣，每年因燒燙傷住院的病患也有7,000人次。燒燙傷是與我們生活息息相關的意外，煮菜或是洗澡都有可能造成。
+                有效的燒燙傷治療，需要對燒燙傷的面積與深度做準確的判斷，然而這需要靠大量的臨床經驗，幸好目前有的儀器可用於燒燙傷深度的診斷，像是雷射督普勒、紅外線熱像儀等；然而對燒燙傷面積的判斷卻仍是用目測的估計，因此各國的文獻都指出(Harish V, Burns. 2015. Baartmans MG, Injury. 2012.)，這樣的方式，使得急診或門診醫師與整形外科醫師，在燒傷面積的估計上有很大的差異，不僅如此，不同燒傷專家對同一位病患的估計也有很大的差異(Giretzlehner M, Burns. 2013)，準確地知道燒燙傷面積是非常重要，因為這與給予輸液的量，給予的營養素，是否需要加護病房，醫療院所有無能力可以照護有關。
                 為了解決這個問題，我們收集了上千張燒燙傷的影像，並由多位整形外科醫師對這些影像標註，接著我們以多個深度學習的演算法，訓練後的模型，可以自動的診斷出各種深度燒燙傷的範圍。為了算出燒燙傷的面積，我們另外訓練了其他模型，可以準確的判斷手掌範圍，由於手掌(不含手指)在兒童或成人，都是0.5% 全身體表面積。在相同或已知的拍照距離紀錄病患傷口與手掌，就可以以人工智慧的模型計算出燒傷面積。 </p>
             <div class="social-icons">
                 <a class="social-icon" href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -60,7 +64,7 @@
                     <img src="/static/images/resnet.png" style="width: 85%"></img>
                 </div>
                 <!-- <div class="flex-shrink-0"><span class="text-primary">July 2010 - December 2011</span></div> -->
-            </div>        
+            </div>
         </div>
     </section>
     <hr class="m-0" />
