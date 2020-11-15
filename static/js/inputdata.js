@@ -11,5 +11,5 @@
 
 
   $('form').on('submit',function(e) {
-          $("#progressId").show();
+        $("#progressIdinputData").show();
   });
