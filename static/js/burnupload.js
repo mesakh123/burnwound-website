@@ -82,7 +82,7 @@
 
   });
     var arrHead = new Array();	// array for header.
-    arrHead = ['id', 'image', 'del',];
+    arrHead = ['id', 'image', 'custom_input','del',];
     function deleteRow(row) {
         var i = row.parentNode.parentNode.rowIndex;
         document.getElementById('POITable').deleteRow(i);
@@ -106,7 +106,33 @@
                 td.appendChild(document.createTextNode(count));
             }
 
+
+            else if (c == 1)  {
+                var ele = document.createElement('img');
+                ele.setAttribute('src', image_url);
+                ele.setAttribute('name', "images");
+                ele.setAttribute('value',image);
+                ele.setAttribute('class', "img-fluid upload-image");
+                ele.setAttribute('style',style="max-width:200px;max-height:200px;");
+                td.appendChild(ele);
+            }
+
             else if (c == 2) {      // the first column.
+                // add a button in every new row in the first column.
+                var inputbox = document.createElement('input');
+
+                // set input attributes.
+                inputbox.setAttribute('type', 'number');
+
+                inputbox.setAttribute('class', 'input-lg w-25 h-100');
+                inputbox.setAttribute('name', 'user_calculated_tbsa');
+                inputbox.setAttribute('step', '0.001');
+                inputbox.setAttribute('style', 'weight:100%;');
+
+                // add button's 'onclick' event.
+                td.appendChild(inputbox);
+            }
+            else if (c == 3) {      // the first column.
                 // add a button in every new row in the first column.
                 var button = document.createElement('button');
 
@@ -120,14 +146,7 @@
 
                 td.appendChild(button);
             }
-            else {
-                var ele = document.createElement('img');
-                ele.setAttribute('src', image_url);
-                ele.setAttribute('name', "images");
-                ele.setAttribute('value',image);
-                ele.setAttribute('class', "img-fluid upload-image");
-                ele.setAttribute('style',style="max-width:200px;max-height:200px;");
-                td.appendChild(ele);
-            }
+
+
         }
     }

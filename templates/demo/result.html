@@ -13,24 +13,39 @@
     </thead>
     <tbody>
     <tr>
-      <td>預測ID</td>
+      <th>預測ID</th>
       <td>{{result_code}}</td>
     </tr>
       <tr>
-        <td>傷口共約</td>
+        <th>傷口共約</th>
         {%if tbsa_result%}
         <td>{{tbsa_result|floatformat:3}} % TBSA</td>
         {%else%}
           <td>無法辨識</td>
         {%endif%}
       </tr>
-       <tr>
-        <td>前8小時點</td>
-        <td>ml/hr</td>
+      <tr >
+          <th rowspan=2>AI判斷TBSA</th>
+          <td>
+              前8小時點 : {{ai_after_eight_hours|floatformat:3}} ml/hr
+          </td>
       </tr>
       <tr>
-        <td >後16小時</td>
-        <td>8 ml/hr</td>
+        <td>
+            後16小時 : {{ai_after_sixteen_hours|floatformat:3}} ml/hr
+        </td>
+      </tr>
+      <tr >
+          <th rowspan=2>使用者手動輸入TBSA</th>
+
+          <td>
+              前8小時點 : {{manual_after_eight_hours|floatformat:3}} ml/hr
+          </td>
+      </tr>
+      <tr>
+        <td>
+             後16小時 : {{manual_after_sixteen_hours|floatformat:3}} ml/hr
+        </td>
       </tr>
     </tbody>
   </table>

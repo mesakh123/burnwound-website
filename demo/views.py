@@ -21,6 +21,7 @@ import string
 import os
 import shutil
 import time
+from django.contrib import messages
 from website.settings import PLATFORMTYPE
 from .grpc_request import predict_image_in_background
 from .views_utils import *
@@ -30,22 +31,26 @@ def burnupload(request):
     burn_image_session = []
     image_ids = []
     image_urls = []
+
     if(request.method == "POST"):
         if len(request.POST.getlist("images")) is 0:
             message="File can't be empty"
+            messages.error(request,message)
             return HttpResponseRedirect(reverse("demo:burnupload_url"))
-        burn64_sess,image_ids =  upload_process(request.POST.getlist("images"),"burn")
+        user_calculated_tbsa = request.POST.getlist("user_calculated_tbsa")
+        burn64_sess,image_ids =  upload_process(request.POST.getlist("images"),"burn",user_calculated_tbsa)
         if "burn_image_session" not in request.session or len(burn64_sess)!=0:
             request.session["burn_image_session"] = burn64_sess
             request.session["burn_image_ids"] = image_ids
         request.session['form-burn-submitted'] = True
+        if len(image_ids)!=0 or image_ids is not None:
+            image_urls = predict_process(image_ids,'burn')
     else:
         if "burn_image_session" in request.session:
             burn_image_session = request.session.get("burn_image_session")
         if 'burn_image_ids' in request.session and "burn_image_session" in request.session:
             image_ids = request.session.get("burn_image_ids",None)
-    if len(image_ids)!=0 or image_ids is not None:
-        image_urls = predict_process(image_ids,'burn')
+
     return render(request, "demo/burnupload.html", locals())
 
 def handupload(request):
@@ -56,18 +61,19 @@ def handupload(request):
     if(request.method == "POST"):
         if len(request.POST.getlist("images")) is 0:
             message="File can't be empty"
-        hand64_sess,image_ids =  upload_process(request.POST.getlist("images"),"hand")
+        hand64_sess,image_ids =  upload_process(request.POST.getlist("images"),"hand",[0])
         if len(hand64_sess)!=0:
             request.session["hand_image_session"] = hand64_sess
             request.session["hand_image_ids"] = image_ids
         request.session['form-hand-submitted'] = True
+        if image_ids is not None :
+            image_urls = predict_process(image_ids,'palm')
     else:
         if "hand_image_session" in request.session  and request.session['hand_image_session'] is not None :
             hand_image_session = request.session.get("hand_image_session")
         if 'hand_image_ids' in request.session and "hand_image_session" in request.session:
             image_ids = request.session.get("hand_image_ids",None)
-    if image_ids is not None :
-        image_urls = predict_process(image_ids,'palm')
+
     return render(request, "demo/handupload.html", locals())
 
 def result(request):
@@ -111,7 +117,7 @@ def result(request):
             while True:
                 flag = True
                 time.sleep(5)
-                burn_flag, burn_pixel_dict,burn_image_dict = loading_database(burn_image_ids,'burn',predictResult)
+                burn_flag, burn_pixel_dict,burn_image_dict,manual_tbsa = loading_database(burn_image_ids,'burn',predictResult)
                 time.sleep(3)
                 hand_flag, hand_pixel_dict,hand_image_dict = loading_database(hand_image_ids,'hand',predictResult)
                 flag = burn_flag and hand_flag
@@ -127,9 +133,21 @@ def result(request):
             if hand_total!=0 and burn_total!=0:
                 tbsa_result = burn_total*0.5/hand_total
                 predictResult.predict_tbsa = tbsa_result
-                predictResult.save()
             else:
                 tbsa_result = False
+            ai_after_eight_hours = 0;ai_after_sixteen_hours=0;manual_after_eight_hours=0;manual_after_sixteen_hours=0;
+            if tbsa_result and data['weight']!='':
+                ai_after_eight_hours = (burn_total/hand_total)*float(data['weight'])*0.125
+                ai_after_sixteen_hours = (burn_total/hand_total)*float(data['weight'])*0.0625
+            if tbsa_result and data['weight']!='' and manual_tbsa:
+                manual_after_eight_hours = manual_tbsa*float(data['weight'])*0.25
+                manual_after_sixteen_hours = manual_tbsa*float(data['weight'])*0.125
+
+            predictResult.ai_after_eight_hours = ai_after_eight_hours
+            predictResult.ai_after_sixteen_hours = ai_after_sixteen_hours
+            predictResult.manual_after_eight_hours = manual_after_eight_hours
+            predictResult.manual_after_sixteen_hours = manual_after_sixteen_hours
+            predictResult.save()
     else:
         return HttpResponseRedirect(reverse("demo:burnupload_url"))
 

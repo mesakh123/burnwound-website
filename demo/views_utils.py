@@ -82,16 +82,18 @@ def inputdata(request):
     #del request.session['data']
     return render(request, "demo/inputdata.html", locals())
 
-def upload_process(files,types="burn"):
+def upload_process(files,types="burn",user_calculated_tbsa=None):
     """
     Process images from base64 to numpy files, then resize to 512x512, then upload to database
     (because of our model XD)
     files : list of base64 Images.
     types : based on different types, upload to different database
     """
-    base64_cookie = []
+    base64_cookie = {}
+    base64_cookie_hand=[]
     image_ids = []
-    for f in files:
+    for f,tbsa in zip(files,user_calculated_tbsa):
+        tbsa = float(tbsa) if tbsa is not '' else 0
         if len(f.split(';base64,'))>1:
             format, f = f.split(';base64,')
             f = base64.b64decode(f)
@@ -102,11 +104,12 @@ def upload_process(files,types="burn"):
             fileTemp.write(f)
             filenameRe = get_random_string(15)
             f_ori = File(fileTemp, name=filenameRe+"-ori.png")
+
             #fileTemp = NamedTemporaryFile()
             #fileTemp.write()
             f_resized = File(fileTemp, name=filenameRe+"-resized.png")
             if types=="burn":
-                newdoc = BurnDocument(burn_docfile_ori = f_ori,burn_docfile_resized=f_resized)
+                newdoc = BurnDocument(burn_docfile_ori = f_ori,burn_docfile_resized=f_resized,user_calculated_tbsa=tbsa)
             else:
                 newdoc = HandDocument(hand_docfile_ori = f_ori,hand_docfile_resized=f_resized)
             newdoc.save()
@@ -115,19 +118,35 @@ def upload_process(files,types="burn"):
             cv2.imwrite(str(newdoc),image_np[:,:,::-1])
             image_ids.append(newdoc.id)
             file_name =str(newdoc)
-            if PLATFORMTYPE is 'Windows':
-                base64_cookie.append("\media"+file_name.split("media")[1].replace("ori",'resized'))
+            if types=="burn":
+                if PLATFORMTYPE is 'Windows':
+                    base64_cookie["\media"+file_name.split("media")[1].replace("ori",'resized')]=tbsa
+                else:
+                    base64_cookie["/media"+file_name.split("media")[1].replace("ori",'resized')]=tbsa
             else:
-                base64_cookie.append("/media"+file_name.split("media")[1].replace("ori",'resized'))
+                if PLATFORMTYPE is 'Windows':
+                    base64_cookie_hand.append("\media"+file_name.split("media")[1].replace("ori",'resized'))
+                else:
+                    base64_cookie_hand.append("/media"+file_name.split("media")[1].replace("ori",'resized'))
         else:
             if types=="burn":
-                id = BurnDocument.objects.get(file_location=f).id
+                burn = BurnDocument.objects.get(file_location=f)
+                id = burn.id
+                burn.user_calculated_tbsa = tbsa
+                burn.save()
+
             else:
                 id = HandDocument.objects.get(file_location=f).id
             image_ids.append(id)
-            base64_cookie.append(f)
+            if types=="burn":
+                base64_cookie[f]=float(tbsa)
+            else:
+                base64_cookie_hand.append(f)
 
-    return base64_cookie,image_ids
+    if types=="burn":
+        return base64_cookie,image_ids
+    else:
+        return base64_cookie_hand,image_ids
 
 
 def predict_process(image_ids,types='burn'):
@@ -144,6 +163,7 @@ def predict_process(image_ids,types='burn'):
 def loading_database(image_ids,types='burn',predictResult=None):
     pixel_dict = {}
     image_dict = {}
+    manual_tbsa = 0
     flag=True
     i = 0
     for id in image_ids:
@@ -161,6 +181,7 @@ def loading_database(image_ids,types='burn',predictResult=None):
                     if int(obj.burn_pixel)!=0:
                         pixel_dict[i]=int(obj.burn_pixel)
                         image_dict[id] = str(obj.burn_predict_docfile)
+                        manual_tbsa+=float(obj.user_calculated_tbsa)
                         i+=1
                     else:
                         image_dict[id] = str(obj.burn_docfile_resized)
@@ -178,4 +199,7 @@ def loading_database(image_ids,types='burn',predictResult=None):
             else:
                 if obj.process_predict is False:
                     flag=False
-    return flag,pixel_dict,image_dict
+    if types=="burn":
+        return flag,pixel_dict,image_dict,manual_tbsa
+    else:
+        return flag,pixel_dict,image_dict

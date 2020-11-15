@@ -45,7 +45,11 @@ class PatientData(models.Model):
 class PredictResult(models.Model):
     predicted_time = models.DateTimeField(default=datetime.now, blank=True)
     result_code = models.CharField(default='',blank=True,max_length=1024)
-    predict_tbsa = models.FloatField(default=0)
+    predict_tbsa_ai = models.FloatField(default=0)
+    ai_after_eight_hours = models.FloatField(default=0)
+    ai_after_sixteen_hours = models.FloatField(default=0)
+    manual_after_eight_hours = models.FloatField(default=0)
+    manual_after_sixteen_hours = models.FloatField(default=0)
     def __str__(self):
         return str(self.predicted_time)
 
@@ -72,5 +76,6 @@ class BurnDocument(models.Model):
     process_predict = models.BooleanField(default=False)
     burn_pixel = models.IntegerField(default=0)
     burn_result = models.ForeignKey(PredictResult, on_delete=models.SET_NULL,blank=True,null=True)
+    user_calculated_tbsa = models.FloatField(blank=True,null=True,default=0.0)
     def __str__(self):
         return str(self.burn_docfile_resized.path)

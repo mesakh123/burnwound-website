@@ -48,17 +48,25 @@
                 <tr>
                     <th>#</th>
                     <th>圖片</th>
+                    <th>TBSA估計</th>
                     <th>刪除</th>
                 </tr>
             </thead>
             {% if burn_image_session%}
 
             <tbody>
-                {% for is in burn_image_session%}
+                {% for is,val in burn_image_session.items%}
                 <tr class="text-center">
-                  <td>{{forloop.counter}}</td>
-                  <td>
+                  <td class="align-middle">{{forloop.counter}}</td>
+                  <td class="align-middle">
                       <img src="{{is}}" alt="images" name="images" value="{{is}}" class="img-fluid upload-image" style="max-width:200px;max-height:200px;">
+                  </td>
+                  <td class="align-middle">
+                    {% if val %}
+                      <input type="number" class="input-lg w-25 h-100" name="user_calculated_tbsa" step="0.001" style="weight:100%;" value="{{val}}">
+                    {%else%}
+                      <input type="number" class="input-lg w-25 h-100" name="user_calculated_tbsa" step="0.001" style="weight:100%;">
+                    {%endif%}
                   </td>
                   <td class="align-middle">
                       <button type="button" class="btn btn-danger align-self-center" onclick="deleteRow(this)"><i class="fas fa-minus"></i></button>
