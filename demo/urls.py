@@ -10,4 +10,5 @@ urlpatterns = [
     path("result/",views.result , name="result_url"),
     path("inputdata/",views.inputdata, name="inputdata_url"),
     path("handupload/",views.handupload, name="handupload_url"),
+    path("feedbacksubmit/",views.feedbacksubmit, name="feedbacksubmit_url"),
 ]

@@ -2,53 +2,141 @@
 
 {%load staticfiles%}
 {% block content%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js" integrity="sha512-f0VlzJbcEB6KiW8ZVtL+5HWPDyW1+nJEjguZ5IVnSQkvZbwBt2RfCBY0CBO1PsMAqxxrG4Di6TfsCPP3ZRwKpA==" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css" integrity="sha512-3q8fi8M0VS+X/3n64Ndpp6Bit7oXSiyCnzmlx6IDBLGlY5euFySyJ46RUlqIVs0DPCGOypqP8IRk/EyPvU28mQ==" crossorigin="anonymous" />
+
 
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-<table class="table table-striped  table-hover table-borderless text-center">
-    <thead>
-      <tr>
-        <th scope="col" colspan='2'>結果</th>
-      </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <th>預測ID</th>
-      <td>{{result_code}}</td>
-    </tr>
-      <tr>
-        <th>傷口共約</th>
-        {%if tbsa_result%}
-        <td>{{tbsa_result|floatformat:3}} % TBSA</td>
-        {%else%}
-          <td>無法辨識</td>
-        {%endif%}
-      </tr>
-      <tr >
-          <th rowspan=2>AI判斷TBSA</th>
-          <td>
-              前8小時點 : {{ai_after_eight_hours|floatformat:3}} ml/hr
-          </td>
-      </tr>
-      <tr>
-        <td>
-            後16小時 : {{ai_after_sixteen_hours|floatformat:3}} ml/hr
-        </td>
-      </tr>
-      <tr >
-          <th rowspan=2>使用者手動輸入TBSA</th>
 
-          <td>
-              前8小時點 : {{manual_after_eight_hours|floatformat:3}} ml/hr
-          </td>
-      </tr>
-      <tr>
-        <td>
-             後16小時 : {{manual_after_sixteen_hours|floatformat:3}} ml/hr
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<form class="col-12"  method="post" id="feedback_form">
+  {%csrf_token%}
+  <div class="d-flex justify-content-center">
+    <table class="table table-striped table-borderless text-center">
+        <thead>
+          <tr>
+            <th scope="col" colspan='2'>結果</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <th>預測ID</th>
+          <td>{{result_code}}</td>
+        </tr>
+          <tr>
+            <th>傷口共約</th>
+            {%if tbsa_result%}
+            <td>{{tbsa_result|floatformat:3}} % TBSA</td>
+            {%else%}
+              <td>無法辨識</td>
+            {%endif%}
+          </tr>
+          <tr >
+              <th rowspan=2>AI判斷TBSA</th>
+              <td>
+                  前8小時點 :
+                  <div class="">
+                    {{ai_after_eight_hours|floatformat:3}} ml/hr
+                  </div>
+              </td>
+          </tr>
+          <tr>
+            <td>
+                後16小時 :
+                <div class="">
+                  {{ai_after_sixteen_hours|floatformat:3}} ml/hr
+                </div>
+            </td>
+          </tr>
+
+          <tr >
+              <th rowspan=2>使用者手動輸入TBSA</th>
+
+              <td>
+                  前8小時點 :
+                  <div class="">
+                     {{manual_after_eight_hours|floatformat:3}} ml/hr
+                  </div>
+              </td>
+          </tr>
+          <tr>
+            <td>
+                 後16小時 :
+                 <div class="">
+                   {{manual_after_sixteen_hours|floatformat:3}} ml/hr
+                 </div>
+            </td>
+          </tr>
+
+          <tr >
+              <th rowspan=2>使用者回饋TBSA</th>
+
+              <td>
+                前8小時點 :
+                  <div >
+                    <span value="{{ai_after_eight_hours|floatformat:3}}" id="feedback_8" style="left: 106%; text-align: center; float: center!important;"name="feedback_8">
+                      {{ai_after_eight_hours|floatformat:3}}
+                     </span> ml/hr
+                  </div>
+              </td>
+          </tr>
+          <tr>
+            <td>
+               後16小時 :
+                 <div >
+                   <span value="{{ai_after_sixteen_hours|floatformat:3}}" id="feedback_16" style="left: 106%; text-align: center; float: center!important;" name="feedback_16">
+                     {{ai_after_sixteen_hours|floatformat:3}}
+                    </span> ml/hr
+                 </div>
+            </td>
+          </tr>
+
+          <tr>
+            <th>
+                 回饋正確的TBSA
+
+            </th>
+            <td>
+
+              <span class="slidecontainer">
+                  <!--<input id="feedback_slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="0.05" data-slider-value="{{tbsa_result|floatformat:2}}"/>-->
+                  <input id="feedback_slider2" class="slider" type="range" min="0" max="100"  step="0.05" value="{{tbsa_result|floatformat:2}}" >
+              </span>
+              <div >
+                <span id="feedback_sliderVal" style="left: 106%; text-align: center; float: center!important;" value="{{tbsa_result|floatformat:2}}" >{{tbsa_result|floatformat:2}}</span> %
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  <script >
+    $("#feedback_slider").slider();
+    $("#feedback_slider").on("slide", function(slideEvt) {
+      $("#feedback_sliderVal").text(slideEvt.value);
+    });
+
+    var slider = document.getElementById("feedback_slider2");
+    var output = document.getElementById("feedback_sliderVal");
+    var feedback_8 = document.getElementById("feedback_8");
+    var feedback_16 = document.getElementById("feedback_16");
+
+    slider.oninput=function(){
+      output.innerHTML = this.value;
+      output.value=this.value;
+      feedback_8.innerHTML = (this.value*{{weight|floatformat:2}}*0.25).toFixed(3);
+      feedback_8.value= (this.value*{{weight|floatformat:2}}*0.25).toFixed(3);
+
+      feedback_16.innerHTML = (this.value*{{weight|floatformat:2}}*0.125).toFixed(3);
+      feedback_16.value = (this.value*{{weight|floatformat:2}}*0.125).toFixed(3);
+    }
+
+
+  </script>
+  <div class="col-12 text-center">
+      <button class="btn btn-primary" type="submit" value="submit" >送出回饋</button>
+  </div>
+</form>
 
   {%if hand_image_dict %}
     <table class="col-12 table-borderlesstext-center my-2">
@@ -88,5 +176,54 @@
 
     </table>
   {%endif%}
+  <script type="text/javascript">
+    $('#feedback_form').on('submit',function(e) {
+
+      e.preventDefault();
+
+      $.ajaxSetup({
+         beforeSend: function(xhr, settings) {
+             function getCookie(name) {
+                 var cookieValue = null;
+                 if (document.cookie && document.cookie != '') {
+                     var cookies = document.cookie.split(';');
+                     for (var i = 0; i < cookies.length; i++) {
+                         var cookie = jQuery.trim(cookies[i]);
+                         // Does this cookie string begin with the name we want?
+                         if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                             cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                             break;
+                         }
+                     }
+                 }
+                 return cookieValue;
+             }
+             if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                 // Only send the token to relative URLs i.e. locally.
+                 xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+             }
+         }
+    });
+      $.ajax({
+            url: "{% url 'demo:feedbacksubmit_url' %}",
+            type: 'POST',
+            data: {
+                "result_code" : '{{result_code}}',
+                "id" : '{{predictResult.id}}',
+                "feedback_8": $("#feedback_8").val(),
+                "feedback_16": $("#feedback_16").val(),
+                "feedback_tbsa" :$("#feedback_sliderVal").val(),
+                dataType: "json",
+            },
+            success: function(data){
+                alert(data.msg);
+             },
+             failure: function() {
+                 alert(data.msg);
+             },
+          });
+    });
+
+  </script>
 
 {%endblock%}

@@ -50,6 +50,9 @@ class PredictResult(models.Model):
     ai_after_sixteen_hours = models.FloatField(default=0)
     manual_after_eight_hours = models.FloatField(default=0)
     manual_after_sixteen_hours = models.FloatField(default=0)
+    feedback_tbsa = models.FloatField(default=0)
+    feedback_after_eight_hours = models.FloatField(default=0)
+    feedback_after_sixteen_hours = models.FloatField(default=0)
     def __str__(self):
         return str(self.predicted_time)
 

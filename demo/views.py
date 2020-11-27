@@ -25,7 +25,7 @@ from django.contrib import messages
 from website.settings import PLATFORMTYPE
 from .grpc_request import predict_image_in_background
 from .views_utils import *
-
+from django.http import JsonResponse
 
 def burnupload(request):
     burn_image_session = []
@@ -80,6 +80,8 @@ def result(request):
     burn_image_dict = {}
     hand_image_dict = {}
     result_code = ""
+    predictResult = None
+    weight = 0.0
     if 'form-patient-submitted' in request.session and 'form-burn-submitted' in request.session and 'form-hand-submitted' in request.session:
         data = request.session.get("data",False)
         if data:
@@ -94,6 +96,7 @@ def result(request):
                 comments = data['comments']
 
             )
+            weight = float(data['weight']) if data['weight'] is not '' else 2.0
             patientData.save()
             predictResult = PredictResult()
             if "burn_image_ids" in request.session:
@@ -107,18 +110,18 @@ def result(request):
                 burn_image_session = request.session.get("burn_image_session")
 
             if PLATFORMTYPE is 'Windows' :
-                predictResult.result_code = str(hand_image_session[0]).rsplit("\\")[-1].split(".")[0]
+                predictResult.result_code = str(hand_image_session[0]).rsplit("\\")[-1].split(".")[0].split("-")[0]
 
             else:
-                predictResult.result_code = str(hand_image_session[0]).rsplit("/")[-1].split(".")[0]
+                predictResult.result_code = str(hand_image_session[0]).rsplit("/")[-1].split(".")[0].split("-")[0]
             predictResult.save()
-            result_code = predictResult.result_code.split("-")[0]
+            result_code = predictResult.result_code
             hand_pixel_dict = {};burn_pixel_dict = {};burn_image_dict = {};hand_image_dict = {}
             while True:
                 flag = True
-                time.sleep(5)
+                time.sleep(1)
                 burn_flag, burn_pixel_dict,burn_image_dict,manual_tbsa = loading_database(burn_image_ids,'burn',predictResult)
-                time.sleep(3)
+                time.sleep(2)
                 hand_flag, hand_pixel_dict,hand_image_dict = loading_database(hand_image_ids,'hand',predictResult)
                 flag = burn_flag and hand_flag
                 if len(burn_image_dict) and len(hand_image_dict):
@@ -148,12 +151,47 @@ def result(request):
             predictResult.manual_after_eight_hours = manual_after_eight_hours
             predictResult.manual_after_sixteen_hours = manual_after_sixteen_hours
             predictResult.save()
-    else:
-        return HttpResponseRedirect(reverse("demo:burnupload_url"))
+    elif request.method=="GET" and('form-patient-submitted' not in request.session or 'form-burn-submitted' not in request.session or 'form-hand-submitted' not in request.session):
+        print("do nothing")
+        #return HttpResponseRedirect(reverse("demo:burnupload_url"))
 
     try:
         for key in list(request.session.keys()):
             del request.session[key]
     except:
         pass
+    if predictResult:
+        request.session["feedback"] = predictResult.id
     return render(request, "demo/result.html", locals())
+
+def feedbacksubmit(request):
+    if request.method=="POST" and request.is_ajax:
+
+        print("request is ajax")
+        result_code = request.POST.get("result_code",None)
+        feedback_tbsa = request.POST.get("feedback_tbsa",None)
+        feedback_8 = request.POST.get("feedback_8",None)
+        feedback_16 = request.POST.get("feedback_16",None)
+        print(" feedback_8 ",feedback_8)
+        print("feedback_16",feedback_16)
+        print("feedback_tbsa",feedback_tbsa)
+        if result_code and feedback_tbsa and feedback_8 and feedback_16 :
+            try:
+                predictResult = PredictResult.objects.get(result_code=result_code)
+            except PredictResult.DoesNotExist:
+                predictResult =None
+            print("Predict :",predictResult)
+            if predictResult:
+                predictResult.feedback_tbsa =feedback_tbsa
+                predictResult.feedback_after_eight_hours = feedback_8
+                predictResult.feedback_after_sixteen_hours = feedback_16
+                predictResult.save()
+                response = {
+                     'msg':'Your form has been submitted successfully' # response message
+                }
+                return JsonResponse(response) # return response as JSON
+    print("HERE")
+    response = {
+         'msg':'Your form has been failed to submit' # response message
+    }
+    return JsonResponse(response) # return response as JSON
