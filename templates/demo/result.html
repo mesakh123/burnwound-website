@@ -125,10 +125,10 @@
       output.innerHTML = this.value;
       output.value=this.value;
       feedback_8.innerHTML = (this.value*{{weight|floatformat:2}}*0.25).toFixed(3);
-      feedback_8.value= (this.value*{{weight|floatformat:2}}*0.25).toFixed(3);
+      feedback_8.setAttribute("value",(this.value*{{weight|floatformat:2}}*0.25).toFixed(3));
 
       feedback_16.innerHTML = (this.value*{{weight|floatformat:2}}*0.125).toFixed(3);
-      feedback_16.value = (this.value*{{weight|floatformat:2}}*0.125).toFixed(3);
+      feedback_16.setAttribute("value",(this.value*{{weight|floatformat:2}}*0.125).toFixed(3));
     }
 
 
@@ -204,19 +204,33 @@
              }
          }
     });
+    var slider = document.getElementById("feedback_slider2");
+    var output = document.getElementById("feedback_sliderVal");
+    var feedback_8 = document.getElementById("feedback_8");
+    var feedback_tbsa = document.getElementById("feedback_tbsa");
+    var feedback_16 = document.getElementById("feedback_16");
       $.ajax({
             url: "{% url 'demo:feedbacksubmit_url' %}",
             type: 'POST',
             data: {
-                "result_code" : '{{result_code}}',
-                "id" : '{{predictResult.id}}',
-                "feedback_8": $("#feedback_8").val(),
-                "feedback_16": $("#feedback_16").val(),
-                "feedback_tbsa" :$("#feedback_sliderVal").val(),
+                result_code : '{{result_code}}',
+                id : '{{predictResult.id}}',
+                feedback_8: $("#feedback_8").attr("value").toString(),
+                feedback_16: $("#feedback_16").attr("value").toString(),
+                feedback_tbsa :$("#feedback_sliderVal").attr("value").toString(),
                 dataType: "json",
+
             },
             success: function(data){
-                alert(data.msg);
+                alert(data.file_url);
+                var a = document.createElement('a');
+                var url = data.file_url;
+                var filename = 'report.csv';
+                a.href = url;
+                a.download = filename;
+                a.click();
+                a.remove();
+
              },
              failure: function() {
                  alert(data.msg);

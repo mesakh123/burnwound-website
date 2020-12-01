@@ -26,7 +26,11 @@ from website.settings import PLATFORMTYPE
 from .grpc_request import predict_image_in_background
 from .views_utils import *
 from django.http import JsonResponse
-
+from io import StringIO
+from django.core.files.base import ContentFile
+import csv
+from website import settings
+from django.core.files import File
 def burnupload(request):
     burn_image_session = []
     image_ids = []
@@ -81,15 +85,17 @@ def result(request):
     hand_image_dict = {}
     result_code = ""
     predictResult = None
+    manual_tbsa = None
     weight = 0.0
     if 'form-patient-submitted' in request.session and 'form-burn-submitted' in request.session and 'form-hand-submitted' in request.session:
         data = request.session.get("data",False)
+        print("Test : ",)
         if data:
             patientData = PatientData(
-                name = data['name'],
-                patient_id = data['patientid'],
+                name = data['name'] if data['name'] is not '' else '',
+                patient_id = data['patientid'] if data['patientid'] is not '' else '',
                 age = int(data['age']) if data['age'] is not '' else 1,
-                sex = data['gender'],
+                sex = data['gender'] if data['gender'] is not '' else '',
                 height= float(data['height']) if data['height'] is not '' else 100.0,
                 weight = float(data['weight']) if data['weight'] is not '' else 2.0,
                 burn_type = data['typeoption'],
@@ -114,6 +120,7 @@ def result(request):
 
             else:
                 predictResult.result_code = str(hand_image_session[0]).rsplit("/")[-1].split(".")[0].split("-")[0]
+            predictResult.patient=patientData
             predictResult.save()
             result_code = predictResult.result_code
             hand_pixel_dict = {};burn_pixel_dict = {};burn_image_dict = {};hand_image_dict = {}
@@ -135,25 +142,25 @@ def result(request):
                 burn_total+=v
             if hand_total!=0 and burn_total!=0:
                 tbsa_result = burn_total*0.5/hand_total
-                predictResult.predict_tbsa = tbsa_result
+                predictResult.predict_tbsa_ai = tbsa_result
             else:
                 tbsa_result = False
             ai_after_eight_hours = 0;ai_after_sixteen_hours=0;manual_after_eight_hours=0;manual_after_sixteen_hours=0;
             if tbsa_result and data['weight']!='':
                 ai_after_eight_hours = (burn_total/hand_total)*float(data['weight'])*0.125
                 ai_after_sixteen_hours = (burn_total/hand_total)*float(data['weight'])*0.0625
+                predictResult.ai_after_eight_hours = float(ai_after_eight_hours)
+                predictResult.ai_after_sixteen_hours = float(ai_after_sixteen_hours)
             if tbsa_result and data['weight']!='' and manual_tbsa:
                 manual_after_eight_hours = manual_tbsa*float(data['weight'])*0.25
                 manual_after_sixteen_hours = manual_tbsa*float(data['weight'])*0.125
+                predictResult.manual_after_eight_hours = float(manual_after_eight_hours)
+                predictResult.manual_after_sixteen_hours = float(manual_after_sixteen_hours)
 
-            predictResult.ai_after_eight_hours = ai_after_eight_hours
-            predictResult.ai_after_sixteen_hours = ai_after_sixteen_hours
-            predictResult.manual_after_eight_hours = manual_after_eight_hours
-            predictResult.manual_after_sixteen_hours = manual_after_sixteen_hours
             predictResult.save()
     elif request.method=="GET" and('form-patient-submitted' not in request.session or 'form-burn-submitted' not in request.session or 'form-hand-submitted' not in request.session):
         print("do nothing")
-        #return HttpResponseRedirect(reverse("demo:burnupload_url"))
+        return HttpResponseRedirect(reverse("demo:burnupload_url"))
 
     try:
         for key in list(request.session.keys()):
@@ -162,35 +169,58 @@ def result(request):
         pass
     if predictResult:
         request.session["feedback"] = predictResult.id
+    if manual_tbsa:
+        request.session["manual_tbsa"] = manual_tbsa
     return render(request, "demo/result.html", locals())
 
 def feedbacksubmit(request):
     if request.method=="POST" and request.is_ajax:
 
-        print("request is ajax")
         result_code = request.POST.get("result_code",None)
         feedback_tbsa = request.POST.get("feedback_tbsa",None)
         feedback_8 = request.POST.get("feedback_8",None)
         feedback_16 = request.POST.get("feedback_16",None)
-        print(" feedback_8 ",feedback_8)
-        print("feedback_16",feedback_16)
-        print("feedback_tbsa",feedback_tbsa)
+        manual_tbsa = None
+        if "manual_tbsa" in request.session:
+            manual_tbsa = request.session["manual_tbsa"]
+
         if result_code and feedback_tbsa and feedback_8 and feedback_16 :
             try:
                 predictResult = PredictResult.objects.get(result_code=result_code)
             except PredictResult.DoesNotExist:
                 predictResult =None
-            print("Predict :",predictResult)
             if predictResult:
+                patient = predictResult.patient
+
+                list_left = ["預測ID","姓名","性別","身分證","年齡","身高","體重","燙傷類別","AI判斷TBSA","AI判斷前8小時點","AI判斷後16小時點",
+                "使用者手動輸入TBSA", "使用者手動輸入TBSA前8小時點","使用者手動輸入TBSA後16小時點","使用者回饋TBSA","使用者回饋TBSA前8小時點","使用者回饋TBSA前16小時點",]
+                list_right = [result_code,patient.name,patient.sex,patient.id,patient.age,patient.height,patient.weight,patient.burn_type,
+                    predictResult.predict_tbsa_ai,predictResult.ai_after_eight_hours,predictResult.ai_after_sixteen_hours,
+                    manual_tbsa,predictResult.manual_after_eight_hours,predictResult.manual_after_sixteen_hours,feedback_tbsa,feedback_8,feedback_16]
                 predictResult.feedback_tbsa =feedback_tbsa
                 predictResult.feedback_after_eight_hours = feedback_8
                 predictResult.feedback_after_sixteen_hours = feedback_16
+
+                rows = zip(list_left,list_right)
+
+                path = os.path.join(settings.MEDIA_ROOT, 'documents', 'predict', 'file',result_code+'.csv')
+                if os.path.exists(path):
+                    os.remove(path)
+                path = result_code+".csv"
+
+                csv_buffer = StringIO()
+                csv_writer = csv.writer(csv_buffer)
+                for row in rows:
+                    csv_writer.writerow(row)
+                csv_file = ContentFile(csv_buffer.getvalue().encode('utf-8'))
+
+                predictResult.predict_file.save(path,csv_file)
                 predictResult.save()
                 response = {
-                     'msg':'Your form has been submitted successfully' # response message
+                     'msg':'Your form has been submitted successfully', # response message
+                     'file_url': "/media/"+str(predictResult.predict_file),
                 }
                 return JsonResponse(response) # return response as JSON
-    print("HERE")
     response = {
          'msg':'Your form has been failed to submit' # response message
     }

@@ -38,23 +38,28 @@ class PatientData(models.Model):
         # Gives the proper plural name for admin
         verbose_name_plural = "PatientData"
 
+
     def __str__(self):
         return self.patient_id
 
 
 class PredictResult(models.Model):
+    patient =  models.ForeignKey(PatientData, on_delete=models.SET_NULL,blank=True,null=True)
     predicted_time = models.DateTimeField(default=datetime.now, blank=True)
     result_code = models.CharField(default='',blank=True,max_length=1024)
     predict_tbsa_ai = models.FloatField(default=0)
     ai_after_eight_hours = models.FloatField(default=0)
     ai_after_sixteen_hours = models.FloatField(default=0)
+    manual_tbsa = models.FloatField(default=0,blank=True)
     manual_after_eight_hours = models.FloatField(default=0)
     manual_after_sixteen_hours = models.FloatField(default=0)
     feedback_tbsa = models.FloatField(default=0)
     feedback_after_eight_hours = models.FloatField(default=0)
     feedback_after_sixteen_hours = models.FloatField(default=0)
+    predict_file = models.FileField(upload_to='documents/predict/file',blank=True,max_length=4096)
     def __str__(self):
         return str(self.predicted_time)
+
 
 
 class HandDocument(models.Model):
