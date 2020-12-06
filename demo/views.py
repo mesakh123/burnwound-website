@@ -158,8 +158,8 @@ def result(request):
                 predictResult.manual_after_sixteen_hours = float(manual_after_sixteen_hours)
 
             predictResult.save()
-    elif request.method=="GET" and('form-patient-submitted' not in request.session or 'form-burn-submitted' not in request.session or 'form-hand-submitted' not in request.session):
-        print("do nothing")
+    else:
+        #print("do nothing")
         return HttpResponseRedirect(reverse("demo:burnupload_url"))
 
     try:

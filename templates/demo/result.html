@@ -20,21 +20,21 @@
         </thead>
         <tbody>
         <tr>
-          <th>預測ID</th>
+          <td>預測ID</td>
           <td>{{result_code}}</td>
         </tr>
           <tr>
-            <th>傷口共約</th>
+            <th>AI判斷%TBSA</th>
             {%if tbsa_result%}
-            <td>{{tbsa_result|floatformat:3}} % TBSA</td>
+            <td>{{tbsa_result|floatformat:3}} % </td>
             {%else%}
               <td>無法辨識</td>
             {%endif%}
           </tr>
           <tr >
-              <th rowspan=2>AI判斷TBSA</th>
+              <td>前8小時點 :</td>
               <td>
-                  前8小時點 :
+
                   <div class="">
                     {{ai_after_eight_hours|floatformat:3}} ml/hr
                   </div>
@@ -43,6 +43,8 @@
           <tr>
             <td>
                 後16小時 :
+            </td>
+            <td>
                 <div class="">
                   {{ai_after_sixteen_hours|floatformat:3}} ml/hr
                 </div>
@@ -50,10 +52,16 @@
           </tr>
 
           <tr >
-              <th rowspan=2>使用者手動輸入TBSA</th>
-
+              <th >使用者手動輸入%TBSA</th>
+              {%if manual_tbsa%}
+              <td>{{manual_tbsa|floatformat:3}} % </td>
+              {%else%}
+                <td>無任何資料</td>
+              {%endif%}
+          </tr>
+          <tr>
+            <td>  前8小時點 :</td>
               <td>
-                  前8小時點 :
                   <div class="">
                      {{manual_after_eight_hours|floatformat:3}} ml/hr
                   </div>
@@ -61,42 +69,20 @@
           </tr>
           <tr>
             <td>
-                 後16小時 :
+              後16小時 :
+            </td>
+            <td>
                  <div class="">
                    {{manual_after_sixteen_hours|floatformat:3}} ml/hr
                  </div>
             </td>
           </tr>
-
-          <tr >
-              <th rowspan=2>使用者回饋TBSA</th>
-
-              <td>
-                前8小時點 :
-                  <div >
-                    <span value="{{ai_after_eight_hours|floatformat:3}}" id="feedback_8" style="left: 106%; text-align: center; float: center!important;"name="feedback_8">
-                      {{ai_after_eight_hours|floatformat:3}}
-                     </span> ml/hr
-                  </div>
-              </td>
-          </tr>
           <tr>
-            <td>
-               後16小時 :
-                 <div >
-                   <span value="{{ai_after_sixteen_hours|floatformat:3}}" id="feedback_16" style="left: 106%; text-align: center; float: center!important;" name="feedback_16">
-                     {{ai_after_sixteen_hours|floatformat:3}}
-                    </span> ml/hr
-                 </div>
-            </td>
+            <th scope="col" colspan='2'>回饋正確的TBSA</th>
           </tr>
 
           <tr>
-            <th>
-                 回饋正確的TBSA
-
-            </th>
-            <td>
+            <td colspan="2">
 
               <span class="slidecontainer">
                   <!--<input id="feedback_slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="0.05" data-slider-value="{{tbsa_result|floatformat:2}}"/>-->
@@ -107,6 +93,33 @@
               </div>
             </td>
           </tr>
+          <tr >
+              <td>
+                前8小時點 :
+              </td>
+              <td>
+                <div >
+                  <span value="{{ai_after_eight_hours|floatformat:3}}" id="feedback_8" style="left: 106%; text-align: center; float: center!important;"name="feedback_8">
+                    {{ai_after_eight_hours|floatformat:3}}
+                   </span> ml/hr
+                </div>
+             </td>
+          </tr>
+
+          <tr>
+            <td>
+              後16小時 :
+            </td>
+            <td>
+                 <div >
+                   <span value="{{ai_after_sixteen_hours|floatformat:3}}" id="feedback_16" style="left: 106%; text-align: center; float: center!important;" name="feedback_16">
+                     {{ai_after_sixteen_hours|floatformat:3}}
+                    </span> ml/hr
+                 </div>
+            </td>
+          </tr>
+
+
         </tbody>
       </table>
   </div>
