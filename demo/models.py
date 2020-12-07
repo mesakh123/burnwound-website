@@ -44,6 +44,7 @@ class PatientData(models.Model):
 
 
 class PredictResult(models.Model):
+    search_fields = ('result_code', )
     patient =  models.ForeignKey(PatientData, on_delete=models.SET_NULL,blank=True,null=True)
     predicted_time = models.DateTimeField(default=datetime.now, blank=True)
     result_code = models.CharField(default='',blank=True,max_length=1024)
