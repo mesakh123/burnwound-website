@@ -86,14 +86,16 @@ def result(request):
     result_code = ""
     predictResult = None
     manual_tbsa = None
+    patient_id = ""
     weight = 0.0
     if 'form-patient-submitted' in request.session and 'form-burn-submitted' in request.session and 'form-hand-submitted' in request.session:
         data = request.session.get("data",False)
         print("Test : ",)
         if data:
+            patient_id = data['patientid'] if data['patientid'] is not '' else ''
             patientData = PatientData(
                 name = data['name'] if data['name'] is not '' else '',
-                patient_id = data['patientid'] if data['patientid'] is not '' else '',
+                patient_id = patient_id,
                 age = int(data['age']) if data['age'] is not '' else 1,
                 sex = data['gender'] if data['gender'] is not '' else '',
                 height= float(data['height']) if data['height'] is not '' else 100.0,
