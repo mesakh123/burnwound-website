@@ -183,6 +183,8 @@ def feedbacksubmit(request):
         feedback_8 = request.POST.get("feedback_8",None)
         feedback_16 = request.POST.get("feedback_16",None)
         manual_tbsa = None
+        patient_id = ""
+
         if "manual_tbsa" in request.session:
             manual_tbsa = request.session["manual_tbsa"]
 
@@ -194,22 +196,24 @@ def feedbacksubmit(request):
             if predictResult:
                 patient = predictResult.patient
 
-                list_left = ["預測ID","姓名","性別","身分證","年齡","身高","體重","燙傷類別","AI判斷TBSA","AI判斷前8小時點","AI判斷後16小時點",
+                list_left = ["病人ID","識別碼","姓名","性別","年齡","身高","體重","燙傷類別","AI判斷TBSA","AI判斷前8小時點","AI判斷後16小時點",
                 "使用者手動輸入TBSA", "使用者手動輸入TBSA前8小時點","使用者手動輸入TBSA後16小時點","使用者回饋TBSA","使用者回饋TBSA前8小時點","使用者回饋TBSA前16小時點",]
-                list_right = [result_code,patient.name,patient.sex,patient.id,patient.age,patient.height,patient.weight,patient.burn_type,
+                list_right = [patient.patient_id, result_code,patient.name,patient.sex,patient.age,patient.height,patient.weight,patient.burn_type,
                     predictResult.predict_tbsa_ai,predictResult.ai_after_eight_hours,predictResult.ai_after_sixteen_hours,
                     manual_tbsa,predictResult.manual_after_eight_hours,predictResult.manual_after_sixteen_hours,feedback_tbsa,feedback_8,feedback_16]
                 predictResult.feedback_tbsa =feedback_tbsa
                 predictResult.feedback_after_eight_hours = feedback_8
                 predictResult.feedback_after_sixteen_hours = feedback_16
-
+                patient_id = patient.patient_id
                 rows = zip(list_left,list_right)
 
-                path = os.path.join(settings.MEDIA_ROOT, 'documents', 'predict', 'file',result_code+'.csv')
+                path = os.path.join(settings.MEDIA_ROOT, 'documents', 'predict', 'file',patient_id+'_'+result_code+'.csv')
                 if os.path.exists(path):
                     os.remove(path)
-                path = result_code+".csv"
-
+                if patient_id is "":
+                    path = result_code+".csv"
+                else:
+                    path = patient_id+".csv"
                 csv_buffer = StringIO()
                 csv_writer = csv.writer(csv_buffer)
                 for row in rows:
@@ -221,6 +225,7 @@ def feedbacksubmit(request):
                 response = {
                      'msg':'Your form has been submitted successfully', # response message
                      'file_url': "/media/"+str(predictResult.predict_file),
+                     'file_name': path,
                 }
                 return JsonResponse(response) # return response as JSON
     response = {

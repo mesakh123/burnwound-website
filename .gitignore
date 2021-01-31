@@ -1,6 +1,7 @@
 /media/
-db.sqlite3
 /static/
+db.sqlite3
 __pycache__
 *.pyc
 **/migrations/
+/locale/

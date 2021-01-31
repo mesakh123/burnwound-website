@@ -24,7 +24,7 @@
 	  <td>{{patient_id}}</td>
 	</tr>
 	<tr>
-          <td>預測ID</td>
+          <td>識別碼</td>
           <td>{{result_code}}</td>
         </tr>
           <tr>
@@ -242,7 +242,7 @@
                 alert(data.file_url);
                 var a = document.createElement('a');
                 var url = data.file_url;
-                var filename = 'report.csv';
+                var filename = data.file_name;
                 a.href = url;
                 a.download = filename;
                 a.click();
