@@ -9,7 +9,7 @@ class PatientDataAdmin(admin.ModelAdmin):
 
 class PredictResultAdmin(admin.ModelAdmin):
     search_fields = ('result_code', )
-    readonly_fields = ('predicted_time')
+    readonly_fields = ('predicted_time',)
 admin.site.register(PatientData,PatientDataAdmin)
 admin.site.register(BurnDocument)
 admin.site.register(HandDocument)
