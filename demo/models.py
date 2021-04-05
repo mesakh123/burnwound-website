@@ -45,7 +45,7 @@ class PatientData(models.Model):
 
 class PredictResult(models.Model):
     patient =  models.ForeignKey(PatientData, on_delete=models.SET_NULL,blank=True,null=True)
-    predicted_time = models.DateTimeField(default=datetime.now, blank=True)
+    predicted_time = models.DateTimeField(auto_now_add=True, blank=True)
     result_code = models.CharField(default='',blank=True,max_length=1024)
     predict_tbsa_ai = models.FloatField(default=0)
     ai_after_eight_hours = models.FloatField(default=0)
