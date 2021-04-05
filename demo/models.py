@@ -32,12 +32,12 @@ class PatientData(models.Model):
         choices=burn_choice,)
     comments = models.TextField()
 
-    created = models.DateTimeField('Created Date',default=datetime.now())
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         # Gives the proper plural name for admin
         verbose_name_plural = "PatientData"
-
 
     def __str__(self):
         return self.patient_id

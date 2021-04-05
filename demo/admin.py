@@ -4,7 +4,8 @@ from .models import PatientData,BurnDocument,HandDocument,PredictResult
 
 
 class PatientDataAdmin(admin.ModelAdmin):
-    list_display = ["patient_id",'name','burn_type']
+    list_display = ["patient_id",'updated','name','burn_type']
+    readonly_fields = ('created','updated')
 
 class PredictResultAdmin(admin.ModelAdmin):
     search_fields = ('result_code', )
