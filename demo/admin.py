@@ -6,7 +6,7 @@ from .models import PatientData,BurnDocument,HandDocument,PredictResult
 class PatientDataAdmin(admin.ModelAdmin):
     list_display = ["patient_id",'updated','name','burn_type']
     readonly_fields = ('created','updated')
-
+    search_fields = ('patient_id','name',)
 class PredictResultAdmin(admin.ModelAdmin):
     search_fields = ('result_code', )
     readonly_fields = ('predicted_time',)
